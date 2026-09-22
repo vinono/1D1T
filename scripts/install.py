@@ -27,6 +27,9 @@ def main():
         print(f"请将 {directory} 加入 PATH，或直接运行 {link}。")
     else:
         print("现在可以在任意目录运行：1d1t --help")
+    sys.path.insert(0, str(target.parent.parent))
+    from oned1t.terminal import welcome
+    welcome()
     return 0
 
 

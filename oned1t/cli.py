@@ -11,6 +11,7 @@ import unicodedata
 from . import __version__
 from .calendar import calendar_range, show_calendar
 from .store import Store, UserError
+from .terminal import BOLD, GREEN, MUTED, header, hint, paint, welcome
 
 
 def clean_text(value):
@@ -31,6 +32,7 @@ def parser():
     commands = app.add_subparsers(dest="command", title="命令")
     add = commands.add_parser("add", help="设置今日唯一重点")
     add.add_argument("title", help="重点内容，请用引号包围")
+    commands.add_parser("welcome", help="显示 Logo 和使用指引")
     commands.add_parser("today", help="查看今日重点")
     edit = commands.add_parser("edit", help="修改今日未完成重点")
     edit.add_argument("title", help="修改后的重点")
@@ -84,31 +86,38 @@ def completion_day(value, today):
 
 
 def show_focus(row, day):
-    print(f"\n  1D1T · {day.isoformat()}")
+    header("FOCUS", day.isoformat())
     if row is None:
-        print('  今天还没有重点。用 1d1t add "一件重要的事" 开始。\n')
+        print(f"\n  {paint('[ ]', MUTED)} 今天还没有重点。\n")
+        hint('1d1t add "一件重要的事"')
     else:
-        print(f"  {'已完成' if row['done_at'] else '待完成'}  {row['title']}\n")
+        marker = paint("[+] 已完成", GREEN) if row["done_at"] else paint("[ ] 待完成", MUTED)
+        print(f"\n  {marker}")
+        print(f"  {paint('│', MUTED)} {paint(row['title'], BOLD)}")
         if row["note"]:
-            print(f"  记录：{row['note']}\n")
+            print(f"  {paint('└', MUTED)} {row['note']}")
         if row["source_day"]:
-            print(f"  沿用自 {row['source_day']}\n")
+            print("  " + paint(f"↳ 沿用自 {row['source_day']}", MUTED))
+        print()
 
 
 def show_records(rows):
     if not rows:
         print("  暂无记录。\n")
     for row in rows:
-        symbol = "✓" if row["done_at"] else "·"
+        symbol = paint("+", GREEN) if row["done_at"] else paint("·", MUTED)
         state = "已完成" if row["done_at"] else "待完成"
-        print(f"  {row['day']}  {symbol} {state}  {row['title']}")
+        print(f"  {paint(row['day'], MUTED)}  {symbol} {state}  {row['title']}")
         if row["note"]:
-            print(f"                {row['note']}")
+            print(f"              {paint('└', MUTED)} {row['note']}")
     print()
 
 
 def main(argv=None, *, today=None):
     args = parser().parse_args(argv)
+    if args.command == "welcome":
+        welcome()
+        return 0
     today = today or date.today()
     directory = args.data_dir or Path(
         os.environ.get("ONED1T_DATA_DIR")
@@ -124,12 +133,13 @@ def main(argv=None, *, today=None):
         if args.command == "stats":
             start = today.replace(day=1) if args.month else today - timedelta(days=today.weekday())
             rows = store.records(start, today, completed_only=True)
-            print(f"\n  {'本月' if args.month else '本周'} · {start} — {today}")
-            print(f"  完成 {len(rows)} 天\n")
+            header("MONTH" if args.month else "WEEK", f"{start} → {today}")
+            print(f"  {paint(f'{len(rows):02d}', GREEN)} {paint('DAYS', MUTED)}  ·  完成 {len(rows)} 天\n")
             show_records(rows)
             return 0
         if args.command == "history":
-            print(f"\n  历史事项 · 最近 {args.limit} 条\n")
+            header("LOG", f"历史事项 · 最近 {args.limit} 条")
+            print()
             show_records(store.records(date.min, today, limit=args.limit))
             return 0
         if args.command == "calendar":
@@ -151,6 +161,8 @@ def main(argv=None, *, today=None):
             row = store.carry(today)
         else:
             row = store.get(today)
+            if args.command is None and row is None and not store.records(date.min, date.max, limit=1):
+                welcome()
         show_focus(row, target)
         return 0
     except (UserError, OSError, sqlite3.Error) as error:
