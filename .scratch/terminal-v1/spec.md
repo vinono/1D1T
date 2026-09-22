@@ -1,6 +1,6 @@
 # 1D1T Terminal V1
 
-Status: implementing
+Status: complete
 
 ## 已确认范围
 

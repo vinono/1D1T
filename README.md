@@ -1,0 +1,92 @@
+# 1D1T · 今天只做一件事
+
+在终端选择今日唯一重点，完成后留下记录。用 GitHub 风格贡献日历看见这些日子。
+离线使用，不需要账号；没有完成率或评分。
+
+## 安装
+
+需要 Python 3.9 或更新版本，无第三方运行依赖。macOS 上运行：
+
+```sh
+python3 scripts/install.py
+1d1t --help
+```
+
+安装器在 `~/.local/bin/1d1t` 创建指向本项目的链接，不覆盖已有命令，也不修改 shell 配置。
+请保留项目目录；移动项目后需要重新创建链接。
+如果 `~/.local/bin` 不在 PATH 中，将它加入你的 shell 配置：
+
+```sh
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+无需安装也可以在项目目录运行 `./bin/1d1t` 或 `python3 -m oned1t`。
+
+## 日常使用
+
+```sh
+1d1t add "完成博客首页"
+1d1t today                         # 直接运行 1d1t 也可以
+1d1t edit "完成首页移动端布局"
+1d1t done "布局和手机适配完成"      # 说明可省略
+1d1t calendar
+1d1t stats --week
+1d1t stats --month
+1d1t history
+```
+
+每天只能有一个重点，重复 `add` 不会覆盖。已完成的重点不能追加或直接修改。
+误点完成可以使用 `1d1t undo`：恢复待完成状态，并清除本次完成说明。
+重复 `done` 保留第一次的完成记录。
+
+昨天没完成时，不会自动顺延：
+
+```sh
+1d1t carry                        # 主动沿用昨天的未完成重点；昨天记录不变
+```
+
+昨天做完但忘记记录时：
+
+```sh
+1d1t done --date 昨天
+1d1t done "补记说明" --date 2026-09-21
+```
+
+只能补记过去已有的重点，不能创建过去的事项或提前完成未来事项。
+补记计入重点原本的日期。`edit` 和 `undo` 仅作用于今天。
+日期使用运行命令时系统的本地日期，周一为一周开始。
+
+```sh
+1d1t calendar --year 2026          # 全年，窄终端自动分段
+1d1t history --limit 100           # 默认最近 30 条，按日期倒序
+```
+
+贡献日历默认显示最近 12 周（含本周截至今天）。绿色 `■` 表示有完成记录，
+灰色 `·` 表示无完成记录，未来日期留空；一天最多一个格子。
+重定向输出时自动去掉颜色，设置 `NO_COLOR=1` 也可关闭颜色。
+
+## 数据
+
+默认文件：`~/Library/Application Support/1D1T/focus.sqlite3`。
+从任意工作目录运行都使用同一份数据，项目更新或移除命令链接不会删除记录。
+所有命令退出后，可以复制整个 `1D1T` 数据目录进行备份。
+
+临时试用或独立数据集：
+
+```sh
+1d1t --data-dir /tmp/1d1t-demo add "试用一下"
+1d1t --data-dir /tmp/1d1t-demo today
+```
+
+也支持 `ONED1T_DATA_DIR` 环境变量，命令行 `--data-dir` 优先。
+后续 macOS App 可读取同一份 SQLite 数据；当前版本不包含 App 或同步功能。
+数据格式见 [docs/storage.md](docs/storage.md)。
+
+## 开发验证
+
+```sh
+python3 -m unittest discover -s tests -v
+python3 -m compileall -q oned1t scripts
+```
+
+测试通过 CLI 的参数和输出验证行为，使用临时数据库；跨日测试在程序入口注入日期。
