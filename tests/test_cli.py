@@ -9,7 +9,7 @@ import unittest
 from unittest.mock import patch
 from datetime import date
 
-from oned1t.cli import main
+from oneDayOneThing.cli import main
 
 
 class CLITest(unittest.TestCase):

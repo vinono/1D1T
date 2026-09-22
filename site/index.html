@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="1D1T：在终端选定今日唯一重点，用贡献日历记录日子。离线使用，数据留在本机。">
+<meta name="theme-color" content="#101310">
+<title>1D1T — 今天只做一件事</title>
+<link rel="icon" href="assets/1d1t-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">跳到内容</a>
+<header><a class="brand" href="./"><span aria-hidden="true">&gt; ▪</span> 1D1T</a><nav aria-label="主导航"><a href="#install">安装</a><a href="https://github.com/vinono/1D1T">GitHub ↗</a></nav></header>
+<main id="main">
+<section class="hero">
+<p class="eyebrow">YOUR TERMINAL. YOUR DAY.</p>
+<h1>ONE DAY.<br>ONE <span>THING.</span></h1>
+<p class="poem">Take a day. Feel the love in everything.</p>
+<p class="intro">今天，只做一件重要的事。<br>在终端选定一个重点，让认真度过的日子慢慢亮起来。</p>
+<div class="actions"><a class="button" href="#install">开始今天的第一件事 <span aria-hidden="true">↗</span></a><a class="secondary" href="https://github.com/vinono/1D1T/blob/main/docs/usage.md">阅读命令指南 →</a></div>
+<p class="meta">macOS · LOCAL FIRST · NO ACCOUNT REQUIRED</p>
+</section>
+<figure><img src="assets/terminal-welcome-concept.png" alt="1D1T 终端欢迎界面设计：绿色方块 Logo、每日重点命令和贡献日历入口" width="1536" height="1024"><figcaption>欢迎界面设计预览 · 图中 Homebrew 命令为示意，实际安装方式见下方。</figcaption></figure>
+<section class="workflow" aria-labelledby="workflow-title"><p class="eyebrow">SMALL COMMANDS. MEANINGFUL DAYS.</p><h2 id="workflow-title">把注意力，留给这一件事。</h2><div class="steps">
+<article><span class="number">01 / CHOOSE</span><h3>选定今日重点</h3><p>一天一个重点。想清楚今天最重要的事，然后开始。</p><code>1d1t add "写完那篇文章"</code></article>
+<article><span class="number">02 / RECORD</span><h3>留下一句记录</h3><p>完成时，为今天留一句话。尚未完成的事可以明天主动沿用。</p><code>1d1t done "把想法写下来了"</code></article>
+<article><span class="number">03 / REFLECT</span><h3>看见那些日子</h3><p>用贡献日历回看记录。一天一格，没有完成率或评分。</p><code>1d1t calendar</code></article>
+</div></section>
+<section id="install" class="install"><div><p class="eyebrow">READY WHEN YOU ARE.</p><h2>打开终端。<br>从今天开始。</h2><p>需要 Python 3.9 或更新版本。<br>离线运行，无第三方 Python 依赖。</p></div><div class="install-code"><div class="code-title">TERMINAL / 安装</div><pre><code>git clone https://github.com/vinono/1D1T.git
+cd 1D1T
+python3 scripts/install.py
+./bin/1d1t welcome</code></pre><p>安装后请保留项目目录。若 <code>1d1t</code> 未找到，请将 <code>~/.local/bin</code> 加入 PATH。</p><a href="https://github.com/vinono/1D1T/blob/main/docs/homebrew.md">使用本地 Homebrew Tap 安装 →</a><p class="note">公开 Homebrew Tap 尚未发布。</p></div></section>
+<section class="privacy"><span aria-hidden="true">[ local ]</span><div><h2>你的记录，留在你的电脑里。</h2><p>无需账号。数据保存在本机 SQLite 中，卸载命令也不会删除记录。当前版本专注终端，未来计划提供原生 macOS App。</p></div></section>
+</main><footer><span>1D1T / 今天只做一件事</span><a href="https://github.com/vinono/1D1T">View source ↗</a></footer>
+</body></html>

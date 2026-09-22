@@ -7,7 +7,7 @@ class OneDayOneThing < Formula
   depends_on "python@3.13"
 
   def install
-    libexec.install "oned1t", "bin"
+    libexec.install "oneDayOneThing", "bin"
     (bin/"1d1t").write <<~SH
       #!/bin/sh
       exec "#{Formula["python@3.13"].opt_bin}/python3.13" "#{libexec}/bin/1d1t" "$@"

@@ -1,105 +1,111 @@
-# 1D1T · 今天只做一件事
+<p align="center">
+  <img src="assets/1d1t-icon.png" alt="1D1T：终端提示符与点亮的方格" width="112">
+</p>
 
-<img src="assets/1d1t-icon.png" alt="1D1T icon：终端提示符与点亮的方格" width="160">
+<h1 align="center">1D1T</h1>
+<p align="center"><strong>ONE DAY. ONE THING.</strong><br>
+Take a day. Feel the love in everything.</p>
+<p align="center">今天，只做一件重要的事。</p>
+<p align="center"><a href="#开始使用">开始使用</a> · <a href="docs/usage.md">命令指南</a> · <a href="docs/homebrew.md">Homebrew 安装</a></p>
 
-在终端选择今日唯一重点，完成后留下记录。用 GitHub 风格贡献日历看见这些日子。
-离线使用，不需要账号；没有完成率或评分。
+---
 
-## 安装
+在 Terminal 里选定今天的一个重点。完成时留下一句记录，让日子在贡献日历中慢慢亮起来。
 
-需要 Python 3.9 或更新版本，无第三方运行依赖。macOS 上运行：
+**离线使用 · 数据留在本机 · 每天一个重点 · 没有完成率或评分**
+
+## 打开终端，从一件事开始
+
+![1D1T 终端欢迎界面设计](assets/terminal-welcome-concept.png)
+
+欢迎界面设计预览。图中的 `brew install 1d1t` 是示意文案，当前安装方式见下方指南。
+实际欢迎界面运行 `1d1t welcome` 查看。
+
+## 一天的使用方式
 
 ```sh
-python3 scripts/install.py
-1d1t --help
+# 选定今天最重要的一件事
+1d1t add "把一直想写的文章写完"
+
+# 随时看一眼今日重点
+1d1t today
+
+# 完成后，为今天留一句话
+1d1t done "终于把想说的话写下来了"
+
+# 看见那些留下记录的日子
+1d1t calendar
 ```
 
-安装器在 `~/.local/bin/1d1t` 创建指向本项目的链接，不覆盖已有命令，也不修改 shell 配置。
-请保留项目目录；移动项目后需要重新创建链接。
-如果 `~/.local/bin` 不在 PATH 中，将它加入你的 shell 配置：
+每天只有一个重点。尚未完成时可以修改；完成后，当天不再追加另一件事。
+昨天没做完的事留在昨天，你可以用 `1d1t carry` 主动沿用。
+
+## 让日子留下痕迹
+
+贡献日历采用 GitHub 风格的方格：一天最多点亮一格，只表示那天有完成记录。
+默认查看最近 12 周，也可以回看整年。
+
+| 想做什么 | 命令 |
+| --- | --- |
+| 查看贡献日历 | `1d1t calendar` |
+| 回看某一年 | `1d1t calendar --year 2026` |
+| 查看本周或本月记录 | `1d1t stats --week` / `1d1t stats --month` |
+| 翻看历史事项 | `1d1t history` |
+| 修改今日重点 | `1d1t edit "新的重点"` |
+| 撤销今日完成 | `1d1t undo` |
+| 补记昨天已有的重点 | `1d1t done --date 昨天` |
+
+更多规则见 [完整使用指南](docs/usage.md)。
+
+## 开始使用
+
+目前面向 macOS Terminal，需要 Python 3.9 或更新版本，无第三方 Python 运行依赖。
+
+```sh
+git clone https://github.com/vinono/1D1T.git
+cd 1D1T
+python3 scripts/install.py
+```
+
+安装器会显示欢迎界面，并在 `~/.local/bin/1d1t` 创建命令链接。
+若命令未找到，将以下内容加入 shell 配置：
 
 ```sh
 export PATH="$HOME/.local/bin:$PATH"
 ```
 
-无需安装也可以在项目目录运行 `./bin/1d1t` 或 `python3 -m oned1t`。
+使用此方式安装后请保留项目目录。也可以直接运行 `./bin/1d1t welcome` 体验。
 
-## 日常使用
+**偏好 Homebrew？** 已提供并验证本地 Tap 打包与安装流程，见 [Homebrew 安装指南](docs/homebrew.md)。
+公开 Tap 尚未发布，暂不能直接使用 `brew install 1d1t`。
 
-```sh
-1d1t add "完成博客首页"
-1d1t today                         # 直接运行 1d1t 也可以
-1d1t edit "完成首页移动端布局"
-1d1t done "布局和手机适配完成"      # 说明可省略
-1d1t calendar
-1d1t stats --week
-1d1t stats --month
-1d1t history
+## 属于你自己的记录
+
+无需账号或联网。记录保存在：
+
+```text
+~/Library/Application Support/1D1T/focus.sqlite3
 ```
 
-每天只能有一个重点，重复 `add` 不会覆盖。已完成的重点不能追加或直接修改。
-误点完成可以使用 `1d1t undo`：恢复待完成状态，并清除本次完成说明。
-重复 `done` 保留第一次的完成记录。
+从任何目录调用命令都会读取同一份数据。退出所有命令后，复制数据目录即可备份。
+卸载命令不会删除记录。详见 [数据格式](docs/storage.md)。
 
-昨天没完成时，不会自动顺延：
+## 项目方向
 
-```sh
-1d1t carry                        # 主动沿用昨天的未完成重点；昨天记录不变
-```
-
-昨天做完但忘记记录时：
+第一版专注终端体验。后续计划是原生 macOS App，共用本地记录；App 尚未实现。
 
 ```sh
-1d1t done --date 昨天
-1d1t done "补记说明" --date 2026-09-21
-```
-
-只能补记过去已有的重点，不能创建过去的事项或提前完成未来事项。
-补记计入重点原本的日期。`edit` 和 `undo` 仅作用于今天。
-日期使用运行命令时系统的本地日期，周一为一周开始。
-
-```sh
-1d1t calendar --year 2026          # 全年，窄终端自动分段
-1d1t history --limit 100           # 默认最近 30 条，按日期倒序
-```
-
-贡献日历默认显示最近 12 周（含本周截至今天）。亮绿色 `■` 表示有完成记录，
-灰色 `▪` 表示无完成记录，青色 `□` 标出尚无完成记录的今天，未来日期留空；一天最多一个格子。
-终端使用统一的 `> ▪ 1D1T` 标识、细分隔线和命令提示，无需特殊字体。
-重定向输出时自动去掉颜色，设置 `NO_COLOR=1` 也可关闭颜色。
-
-## 数据
-
-默认文件：`~/Library/Application Support/1D1T/focus.sqlite3`。
-从任意工作目录运行都使用同一份数据，项目更新或移除命令链接不会删除记录。
-所有命令退出后，可以复制整个 `1D1T` 数据目录进行备份。
-
-临时试用或独立数据集：
-
-```sh
-1d1t --data-dir /tmp/1d1t-demo add "试用一下"
-1d1t --data-dir /tmp/1d1t-demo today
-```
-
-也支持 `ONED1T_DATA_DIR` 环境变量，命令行 `--data-dir` 优先。
-后续 macOS App 可读取同一份 SQLite 数据；当前版本不包含 App 或同步功能。
-数据格式见 [docs/storage.md](docs/storage.md)。
-
-## 开发验证
-
-```sh
+# 在临时数据库中运行测试
 python3 -m unittest discover -s tests -v
-python3 -m compileall -q oned1t scripts
 ```
 
-测试通过 CLI 的参数和输出验证行为，使用临时数据库；跨日测试在程序入口注入日期。
+---
 
-## 欢迎界面与 Homebrew
+*Take a day. Feel the love in everything.*
 
-`1d1t welcome` 显示绿色文字 Logo、`ONE DAY. ONE THING.` 和
-`Take a day. Feel the love in everything.`，以及常用命令。
-本地安装器完成安装时也显示欢迎界面；没有任何历史记录时，直接运行 `1d1t` 显示欢迎界面与今日状态。
-显式 `today` 及日常数据命令保持简洁，窄终端使用紧凑 Logo，`NO_COLOR` 仍然有效。
+## 命名与落地页
 
-已提供 Homebrew 本地打包脚本与 Formula 模板，安装后的命令仍是 `1d1t`。
-具体安装、更新、卸载和公开发布步骤见 [Homebrew 文档](docs/homebrew.md)。
+`1D1T` 是品牌名，`1d1t` 是终端命令；`oneDayOneThing/` 是内部 Python 包，
+使用字母开头以支持标准 Python 导入。它们指向同一个项目。
+
+独立落地页源码在 `site/`，使用 GitHub Pages 托管；配置方式见 [Pages 部署指南](docs/pages.md)。

@@ -11,7 +11,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from oned1t import __version__
+from oneDayOneThing import __version__
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
     output.mkdir(exist_ok=True)
     archive = output / f"1d1t-{__version__}.tar.gz"
     files = [ROOT / "bin/1d1t", ROOT / "README.md", ROOT / "docs/storage.md"]
-    files += sorted((ROOT / "oned1t").glob("*.py"))
+    files += sorted((ROOT / "oneDayOneThing").glob("*.py"))
     buffer = io.BytesIO()
     with tarfile.open(fileobj=buffer, mode="w") as tar:
         for path in files:

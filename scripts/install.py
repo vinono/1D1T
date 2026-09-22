@@ -28,7 +28,7 @@ def main():
     else:
         print("现在可以在任意目录运行：1d1t --help")
     sys.path.insert(0, str(target.parent.parent))
-    from oned1t.terminal import welcome
+    from oneDayOneThing.terminal import welcome
     welcome()
     return 0
 
