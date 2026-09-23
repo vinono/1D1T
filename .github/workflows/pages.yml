@@ -23,7 +23,7 @@ jobs:
       - name: Assemble static site
         run: |
           mkdir -p _site/assets
-          cp site/index.html site/style.css _site/
+          cp site/index.html site/style.css site/script.js _site/
           cp assets/terminal-welcome-concept.png assets/1d1t-icon.png _site/assets/
       - uses: actions/upload-pages-artifact@v3
         with:

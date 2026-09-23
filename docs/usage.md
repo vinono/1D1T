@@ -4,22 +4,29 @@
 
 ## 安装
 
-需要 Python 3.9 或更新版本，无第三方运行依赖。macOS 上运行：
+macOS 用户通过 Homebrew 安装，Python 依赖会自动安装：
 
 ```sh
-python3 scripts/install.py
+brew tap vinono/tap
+brew install 1d1t
 1d1t --help
 ```
 
-安装器在 `~/.local/bin/1d1t` 创建指向本项目的链接，不覆盖已有命令，也不修改 shell 配置。
-请保留项目目录；移动项目后需要重新创建链接。
-如果 `~/.local/bin` 不在 PATH 中，将它加入你的 shell 配置：
+更新与卸载见 [Homebrew 指南](homebrew.md)。
+
+### 从源码运行
+
+需要 Python 3.9 或更新版本，无第三方 Python 运行依赖：
 
 ```sh
-export PATH="$HOME/.local/bin:$PATH"
+git clone https://github.com/vinono/1D1T.git
+cd 1D1T
+./bin/1d1t
 ```
 
-无需安装也可以在项目目录运行 `./bin/1d1t` 或 `python3 -m oneDayOneThing`。
+可选运行 `python3 scripts/install.py`，在 `~/.local/bin/1d1t` 创建指向项目的链接。
+安装器不覆盖已有命令，也不修改 shell 配置。请保留项目目录，并将 `~/.local/bin` 加入 PATH。
+如果已通过 Homebrew 安装，无需再创建此链接。
 
 ## 日常使用
 
@@ -98,5 +105,5 @@ python3 -m compileall -q oneDayOneThing scripts
 本地安装器完成安装时也显示欢迎界面；没有任何历史记录时，直接运行 `1d1t` 显示欢迎界面与今日状态。
 显式 `today` 及日常数据命令保持简洁，窄终端使用紧凑 Logo，`NO_COLOR` 仍然有效。
 
-已提供 Homebrew 本地打包脚本与 Formula 模板，安装后的命令仍是 `1d1t`。
+Homebrew Tap 使用 `1d1t` 别名指向 `one-day-one-thing` Formula，安装后的命令为 `1d1t`。
 具体安装、更新、卸载和公开发布步骤见 [Homebrew 文档](homebrew.md)。

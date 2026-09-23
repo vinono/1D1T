@@ -43,6 +43,17 @@ def main():
     directory = output / "homebrew-tap/Formula"
     directory.mkdir(parents=True, exist_ok=True)
     (directory / "one-day-one-thing.rb").write_text(formula)
+    aliases = directory.parent / "Aliases"
+    aliases.mkdir(exist_ok=True)
+    alias = aliases / "1d1t"
+    if alias.is_symlink():
+        alias.unlink()
+    alias.symlink_to("../Formula/one-day-one-thing.rb")
+    (directory.parent / "README.md").write_text(
+        "# 1D1T Homebrew Tap\n\n"
+        "```sh\nbrew tap vinono/tap\nbrew install 1d1t\n```\n\n"
+        "One day. One thing. [Usage and source](https://github.com/vinono/1D1T).\n"
+    )
     print(f"Archive: {archive}\nSHA256: {checksum}\nFormula: {directory / 'one-day-one-thing.rb'}")
 
 

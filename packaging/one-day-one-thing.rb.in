@@ -1,5 +1,6 @@
 class OneDayOneThing < Formula
   desc "One focus per day, with a terminal contribution calendar"
+  homepage "https://github.com/vinono/1D1T"
   url @URL@
   version @VERSION@
   sha256 @SHA256@
