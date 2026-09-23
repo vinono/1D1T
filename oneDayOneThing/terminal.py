@@ -5,9 +5,10 @@ import shutil
 import sys
 
 
-TAGLINE = "Take a day. Feel the love in everything."
+TAGLINE = "One day. One thing.\nTake a day. Feel the love in everything."
 
-GREEN = "92"
+SILVER = "97"
+GREEN = SILVER
 MUTED = "90"
 CYAN = "36"
 BOLD = "1"
@@ -27,13 +28,13 @@ def rule():
 
 
 def header(section, subtitle):
-    print(f"\n  {paint('> ▪', GREEN)} {paint('1D1T', BOLD)} {paint('/ ' + section, MUTED)}")
+    print(f"\n  {paint('> ▪', SILVER)} {paint('1D1T', BOLD)} {paint('/ ' + section, MUTED)}")
     rule()
     print(f"  {paint(subtitle, MUTED)}")
 
 
 def hint(command):
-    print(f"  {paint('$', GREEN)} {command}\n")
+    print(f"  {paint('$', SILVER)} {command}\n")
 
 
 def welcome():
@@ -49,11 +50,12 @@ def welcome():
     print()
     if width() >= 32:
         for line in logo:
-            print(paint(line, GREEN))
+            print(paint(line, SILVER))
     else:
-        print(paint("  > 1D1T", GREEN))
+        print(paint("  > 1D1T", SILVER))
     print()
-    print(textwrap.fill(TAGLINE, width=max(12, width() - 2), initial_indent="  ", subsequent_indent="  "))
+    for line in TAGLINE.splitlines():
+        print(textwrap.fill(line, width=max(12, width() - 2), initial_indent="  ", subsequent_indent="  "))
     print()
     rule()
     for command in ('1d1t add "今日重点"', '1d1t done', '1d1t calendar', '1d1t --help'):

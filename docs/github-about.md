@@ -6,7 +6,7 @@
 
 Description：
 
-> Take a day. Feel the love in everything. A local-first terminal app for one daily focus, with a contribution calendar.
+> One day. One thing. Take a day. Feel the love in everything. A local-first terminal app for one daily focus, with a contribution calendar.
 
 核对远端设置：
 

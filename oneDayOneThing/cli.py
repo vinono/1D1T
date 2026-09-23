@@ -120,7 +120,9 @@ def main(argv=None, *, today=None):
         return 0
     today = today or date.today()
     directory = args.data_dir or Path(
-        os.environ.get("ONED1T_DATA_DIR")
+        os.environ.get("ONE_DAY_ONE_THING_DATA_DIR")
+        or os.environ.get("ONE_DAY_DATA_DIR")
+        or os.environ.get("ONED1T_DATA_DIR")
         or Path.home() / "Library" / "Application Support" / "1D1T"
     )
     store = None

@@ -1,16 +1,17 @@
 # 1D1T 品牌素材
 
-唯一品牌标语：**Take a day. Feel the love in everything.**
+品牌标语：
+**One day. One thing.**
+**Take a day. Feel the love in everything.**
 
 当前欢迎界面图为 [`terminal-welcome.png`](terminal-welcome.png)，用于 README 与落地页。
 编辑说明与提示词见 [terminal-welcome.md](terminal-welcome.md)。
-旧的 `terminal-welcome-concept.*`、`terminal-welcome-love.*` 仅保留为历史设计素材。
 
 ## 图标
 
-`1d1t-icon.png`：使用内置 imagegen 生成的方形 PNG 图标。
-设计为深石墨色圆角底、浅薄荷色终端提示符、单个亮绿色光标方格和 1D1T 字标。
-绿色方格同时表示贡献日历中点亮的一天。终端用文字标识 `> ▪ 1D1T` 呼应。
+`1d1t-icon.png`：方形 PNG 图标，采用统一的银盐冷灰极简设计（Silver Gelatin）。
+设计为深石墨圆角底、纯净银白终端提示符 `>`、单个纯净银白微光方格光标与 1D1T 字标。
+纯白方格同时表示贡献日历中点亮的一天。终端用文字标识 `> ▪ 1D1T` 呼应。
 PNG 是品牌素材，当前 CLI 不需要或自动安装 macOS App 图标。
 
 ## 最终生成提示词

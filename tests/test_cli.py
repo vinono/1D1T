@@ -30,9 +30,10 @@ class CLITest(unittest.TestCase):
     def test_welcome_does_not_create_database_and_first_launch_shows_branding(self):
         code, output, _ = self.run_cli("welcome")
         self.assertEqual(code, 0)
-        self.assertNotIn("ONE DAY. ONE THING.", output)
+        self.assertIn("One day. One thing.", output)
         self.assertIn("Take a day. Feel the love in everything.", output)
         self.assertFalse((Path(self.temp.name) / "focus.sqlite3").exists())
+        self.assertIn("One day. One thing.", self.run_cli()[1])
         self.assertIn("Take a day. Feel the love in everything.", self.run_cli()[1])
         self.run_cli("add", "今日重点")
         self.assertNotIn("Take a day. Feel the love in everything.", self.run_cli()[1])
@@ -163,7 +164,7 @@ class CLITest(unittest.TestCase):
 
     def test_executable_uses_same_data_from_other_working_directories(self):
         command = Path(__file__).resolve().parents[1] / "bin" / "1d1t"
-        env = dict(os.environ, ONED1T_DATA_DIR=self.temp.name)
+        env = dict(os.environ, ONE_DAY_ONE_THING_DATA_DIR=self.temp.name)
         added = subprocess.run(
             [sys.executable, str(command), "add", "跨目录使用"],
             cwd="/tmp", env=env, text=True, capture_output=True,
@@ -178,7 +179,7 @@ class CLITest(unittest.TestCase):
 
     def test_simultaneous_adds_preserve_a_single_focus(self):
         command = Path(__file__).resolve().parents[1] / "bin" / "1d1t"
-        env = dict(os.environ, ONED1T_DATA_DIR=self.temp.name)
+        env = dict(os.environ, ONE_DAY_ONE_THING_DATA_DIR=self.temp.name)
         processes = [subprocess.Popen(
             [sys.executable, str(command), "add", title],
             env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
@@ -192,6 +193,19 @@ class CLITest(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0)
         self.assertEqual(result.stdout.count("待完成"), 1)
+
+    def test_environment_variable_precedence_and_compatibility(self):
+        command = Path(__file__).resolve().parents[1] / "bin" / "1d1t"
+        with tempfile.TemporaryDirectory() as dir_primary, tempfile.TemporaryDirectory() as dir_legacy:
+            # 1. Primary variable ONE_DAY_ONE_THING_DATA_DIR works
+            subprocess.run([sys.executable, str(command), "add", "主要变量测试"], env=dict(os.environ, ONE_DAY_ONE_THING_DATA_DIR=dir_primary), check=True)
+            res = subprocess.run([sys.executable, str(command), "today"], env=dict(os.environ, ONE_DAY_ONE_THING_DATA_DIR=dir_primary), capture_output=True, text=True, check=True)
+            self.assertIn("主要变量测试", res.stdout)
+
+            # 2. Legacy fallback ONED1T_DATA_DIR remains fully compatible
+            subprocess.run([sys.executable, str(command), "add", "旧变量兼容测试"], env=dict(os.environ, ONED1T_DATA_DIR=dir_legacy), check=True)
+            res_legacy = subprocess.run([sys.executable, str(command), "today"], env=dict(os.environ, ONED1T_DATA_DIR=dir_legacy), capture_output=True, text=True, check=True)
+            self.assertIn("旧变量兼容测试", res_legacy.stdout)
 
 
 if __name__ == "__main__":

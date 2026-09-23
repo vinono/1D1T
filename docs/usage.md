@@ -86,7 +86,7 @@ cd 1D1T
 1d1t --data-dir /tmp/1d1t-demo today
 ```
 
-也支持 `ONED1T_DATA_DIR` 环境变量，命令行 `--data-dir` 优先。
+也支持 `ONE_DAY_ONE_THING_DATA_DIR`（或简写 `ONE_DAY_DATA_DIR`）环境变量，命令行 `--data-dir` 优先。
 后续 macOS App 可读取同一份 SQLite 数据；当前版本不包含 App 或同步功能。
 数据格式见 [docs/storage.md](storage.md)。
 
@@ -101,8 +101,8 @@ python3 -m compileall -q oneDayOneThing scripts
 
 ## 欢迎界面与 Homebrew
 
-`1d1t welcome` 显示绿色文字 Logo、唯一品牌标语
-`Take a day. Feel the love in everything.`，以及常用命令。
+`1d1t welcome` 显示银盐冷白文字 Logo、品牌标语
+`One day. One thing.` 与 `Take a day. Feel the love in everything.`，以及常用命令。
 本地安装器完成安装时也显示欢迎界面；没有任何历史记录时，直接运行 `1d1t` 显示欢迎界面与今日状态。
 显式 `today` 及日常数据命令保持简洁，窄终端使用紧凑 Logo，`NO_COLOR` 仍然有效。
 

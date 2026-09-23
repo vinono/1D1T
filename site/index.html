@@ -1,38 +1,304 @@
 <!doctype html>
-<html lang="zh-CN">
+<html class="dark" lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="1D1T：在终端选定今日唯一重点，用贡献日历记录日子。离线使用，数据留在本机。">
-<meta name="theme-color" content="#101310">
-<title>1D1T — Take a day. Feel the love in everything.</title>
-<link rel="icon" href="assets/1d1t-icon.png">
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1D1T — One day. One thing. Take a day. Feel the love in everything.</title>
+  <meta name="description" content="1D1T：在终端选定今日唯一重点，用贡献日历记录日子。离线使用，数据留在本机，无完成率与评分。">
+  <meta name="theme-color" content="#0C0C0C">
+  <link rel="icon" href="assets/1d1t-icon.png">
+
+  <!-- Google Fonts: Inter, JetBrains Mono, Noto Serif SC -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Noto+Serif+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "-apple-system", "system-ui", "sans-serif"],
+            mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+            serif: ["Noto Serif SC", "Songti SC", "SimSun", "Georgia", "serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    pre, code { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+    /* 银盐冷灰 (Silver Gelatin) 极简纯净体系 */
+    :root {
+      --bg: #0C0C0C;
+      --surface: #141414;
+      --border: #242424;
+      --ink: #F5F5F5;
+      --dim: #A0A0A0;
+      --muted: #666666;
+      --accent: #FFFFFF;
+      --card-frame: #070707;
+      --btn-bg: #FFFFFF;
+      --btn-text: #0C0C0C;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+    }
+
+    .glow-cell-active {
+      box-shadow: 0 0 7px rgba(255, 255, 255, 0.65);
+    }
+  </style>
 </head>
-<body>
-<a class="skip" href="#main">跳到内容</a>
-<header><a class="brand" href="./"><span aria-hidden="true">&gt; ▪</span> 1D1T</a><nav aria-label="主导航"><a href="#install">安装</a><a href="https://github.com/vinono/1D1T">GitHub ↗</a></nav></header>
-<main id="main">
-<section class="hero">
-<p class="eyebrow">1D1T / TERMINAL / V0.1.0</p>
-<h1>Take a day.<br><span>Feel the love<br>in everything.</span></h1>
-<p class="intro">在终端选定一个重点，让认真度过的日子慢慢亮起来。</p>
-<div class="actions"><a class="button" href="#install">安装 1D1T <span aria-hidden="true">↗</span></a><a class="secondary" href="https://github.com/vinono/1D1T/blob/main/docs/usage.md">阅读命令指南 →</a></div>
-<p class="meta">macOS · LOCAL FIRST · NO ACCOUNT REQUIRED</p>
-</section>
-<figure><img src="assets/terminal-welcome.png" alt="1D1T 终端欢迎界面设计：绿色方块 Logo、每日重点命令和贡献日历入口" width="1536" height="1024"><figcaption>1D1T / Take a day. Feel the love in everything.</figcaption></figure>
-<section class="workflow" aria-labelledby="workflow-title"><p class="eyebrow">HOW IT WORKS</p><h2 id="workflow-title">选定、完成、回看。</h2><div class="steps">
-<article><span class="number">01 / CHOOSE</span><h3>选定今日重点</h3><p>一天一个重点。想清楚今天最重要的事，然后开始。</p><code>1d1t add "写完那篇文章"</code></article>
-<article><span class="number">02 / RECORD</span><h3>留下一句记录</h3><p>完成时，为今天留一句话。尚未完成的事可以明天主动沿用。</p><code>1d1t done "把想法写下来了"</code></article>
-<article><span class="number">03 / REFLECT</span><h3>看见那些日子</h3><p>用贡献日历回看记录。一天一格，没有完成率或评分。</p><code>1d1t calendar</code></article>
-</div></section>
-<section id="install" class="install" aria-labelledby="install-title">
-<div><p class="eyebrow">INSTALL</p><h2 id="install-title">安装 1D1T</h2><p>用 Homebrew 安装，依赖自动就绪。<br>然后，留心今天的一件事。</p><a class="release" href="https://github.com/vinono/1D1T/releases/tag/v0.1.0">v0.1.0 发布说明 ↗</a></div>
-<div class="install-code"><div class="code-title"><span>TERMINAL / 安装</span><button type="button" id="copy-install" aria-label="复制 Homebrew 安装命令">复制命令</button></div><pre><code id="install-command">brew tap vinono/tap
-brew install 1d1t</code></pre><p id="copy-status" role="status" aria-live="polite"></p><p>若 Homebrew 提示 <code>untrusted tap</code>，先运行：</p><pre class="first-command"><code>brew trust --formula \
-  vinono/tap/one-day-one-thing</code></pre><p>再重试安装，然后在任意目录开始：</p><pre class="first-command"><code>1d1t add "做一件值得记住的事"</code></pre><p>需要 macOS 和 <a href="https://brew.sh/">Homebrew</a>。Python 由 Homebrew 自动安装。</p><a href="https://github.com/vinono/1D1T/blob/main/docs/homebrew.md">安装、升级与卸载指南 →</a></div>
-</section>
-<section class="privacy"><span aria-hidden="true">[ local ]</span><div><h2>你的记录，留在你的电脑里。</h2><p>无需账号。数据保存在本机 SQLite 中，卸载命令也不会删除记录。当前版本专注终端，未来计划提供原生 macOS App。</p></div></section>
-</main><footer><span>1D1T / Take a day. Feel the love in everything.</span><a href="https://github.com/vinono/1D1T">View source ↗</a></footer>
-<script src="script.js" defer></script>
-</body></html>
+<body class="min-h-screen flex flex-col font-sans">
+
+  <!-- 顶部画廊 Header -->
+  <header class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-7 flex items-center justify-between border-b border-[var(--border)]">
+    <div class="flex items-baseline gap-3">
+      <span class="font-mono text-xl font-bold tracking-tight text-[var(--ink)]">1D1T</span>
+      <span class="font-serif text-xs text-[var(--dim)] italic">One Day One Thing</span>
+    </div>
+
+    <nav class="flex items-center space-x-6 text-xs font-mono tracking-widest uppercase text-[var(--dim)]">
+      <a href="#install" class="hover:text-[var(--accent)] transition-colors">安装</a>
+      <a href="https://github.com/vinono/1D1T/blob/main/docs/usage.md" class="hover:text-[var(--accent)] transition-colors">文档</a>
+      <a href="https://github.com/vinono/1D1T" target="_blank" class="hover:text-[var(--accent)] transition-colors">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <!-- 主体海报排版 -->
+  <main class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-16 flex-1 space-y-16 sm:space-y-20">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <!-- 左侧：文学诗性排版 -->
+      <div class="lg:col-span-6 space-y-8">
+        <p class="font-mono text-xs tracking-widest text-[var(--accent)] uppercase">
+          [ ISSUE 01 — FOCUS IN QUIET ]
+        </p>
+
+        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-[var(--ink)] leading-[1.18]">
+          喜歡花一天<br>
+          <span class="text-[var(--accent)] font-serif italic">感覺一切是爱。</span>
+        </h1>
+
+        <p class="font-mono text-sm text-[var(--dim)] leading-relaxed tracking-wide">
+          One day. One thing.<br>
+          Take a day. Feel the love in everything.
+        </p>
+
+        <div class="h-[1px] w-24 bg-[var(--border)]"></div>
+
+        <p class="font-serif text-base text-[var(--dim)] leading-relaxed">
+          在这个充斥着红点推送与无限待办清单的世界里，1D1T 试图给你的终端留出一片安静的空地。<br>
+          清晨选定今天唯一的一件事；黄昏留下一句真实的记录。
+        </p>
+
+        <!-- 快速安装栏（银盐配色 · 命令行换行 · copy） -->
+        <div class="pt-4 space-y-3" id="install">
+          <div class="p-4 bg-[var(--surface)] border border-[var(--border)] rounded-md flex items-center justify-between font-mono text-xs shadow-sm">
+            <div class="space-y-1.5 leading-relaxed font-mono">
+              <div class="flex items-center gap-2">
+                <span class="text-[var(--dim)] select-none">$</span>
+                <span class="text-[var(--ink)] font-medium">brew tap vinono/tap</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[var(--dim)] select-none">$</span>
+                <span class="text-[var(--ink)] font-medium">brew install 1d1t</span>
+              </div>
+            </div>
+            <button onclick="copyCommand('brew tap vinono/tap && brew install 1d1t', this)" class="ml-4 px-3.5 py-1.5 bg-[var(--btn-bg)] text-[var(--btn-text)] rounded hover:opacity-90 transition-all font-mono text-xs font-semibold tracking-wide">
+              copy
+            </button>
+          </div>
+          <p class="text-[11px] font-mono text-[var(--muted)]">
+            * 依赖由 Homebrew 自动就绪，离线使用，数据永不出本机。
+          </p>
+        </div>
+      </div>
+
+      <!-- 右侧：艺术装裱展示终端欢迎图 -->
+      <div class="lg:col-span-6">
+        <figure class="p-3.5 bg-[var(--card-frame)] border border-[var(--border)] rounded-lg shadow-xl group transition-all">
+          <div class="relative overflow-hidden rounded border border-[var(--border)]">
+            <img src="assets/terminal-welcome.png" alt="1D1T 终端欢迎界面" class="w-full h-auto object-cover transform transition-transform duration-500 group-hover:scale-[1.01]" />
+          </div>
+          <figcaption class="mt-3 flex items-center justify-between font-mono text-[11px] text-[var(--muted)] px-1">
+            <span>FIG. 01 — 终端欢迎界面设计画幅</span>
+            <span>1536 × 1024</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- 交互体验矩阵：ACTIVITY MATRIX (银盐质感 · 事实记录展台 · 无完成率与评分) -->
+    <section class="p-6 sm:p-8 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-xl space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--border)]/60">
+        <div class="flex items-center gap-2.5 font-mono text-xs text-[var(--dim)]">
+          <span class="w-2.5 h-2.5 rounded-full bg-[var(--accent)] glow-cell-active inline-block"></span>
+          <span class="tracking-wider font-semibold uppercase">ACTIVITY MATRIX (最近 16 周交互体验预览)</span>
+        </div>
+        <div id="matrix-hover-tip" class="font-mono text-xs text-[var(--dim)] truncate min-h-[1.5em] flex items-center">
+          悬停在方格上查看当日记录
+        </div>
+      </div>
+
+      <!-- 16 周矩阵 (7 行 x 16 列 = 112 格) -->
+      <div class="overflow-x-auto py-2">
+        <div class="grid grid-flow-col grid-rows-7 gap-2 w-max" id="interactive-matrix">
+          <!-- 由 JS 渲染 -->
+        </div>
+      </div>
+
+      <!-- 底部图例与无完成率说明 -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pt-3 border-t border-[var(--border)]/60 text-xs font-mono text-[var(--muted)] gap-2">
+        <div class="flex items-center gap-2">
+          <span>未记录</span>
+          <span class="w-3.5 h-3.5 rounded-[2px] bg-[var(--border)]/40 border border-[var(--border)]"></span>
+          <span class="w-3.5 h-3.5 rounded-[2px] bg-[var(--accent)] glow-cell-active"></span>
+          <span class="text-[var(--dim)]">已点亮</span>
+        </div>
+        <div class="text-[var(--dim)]">
+          共计专注记录：<strong class="text-[var(--ink)] font-bold">48 天</strong> · 没有完成率与评分
+        </div>
+      </div>
+    </section>
+
+    <!-- 极简三步曲 -->
+    <section class="pt-8 border-t border-[var(--border)]">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div class="space-y-3">
+          <div class="font-mono text-xs text-[var(--accent)] font-semibold">01 / CHOOSE</div>
+          <h3 class="font-serif text-lg font-semibold text-[var(--ink)]">选定今日重点</h3>
+          <p class="font-serif text-sm text-[var(--dim)] leading-relaxed">
+            一天只有一个重点。想清楚今天最重要的事，输入命令，而后放下手机开始。
+          </p>
+          <code class="block font-mono text-xs text-[var(--muted)] pt-2">1d1t add "写完那篇文章"</code>
+        </div>
+
+        <div class="space-y-3">
+          <div class="font-mono text-xs text-[var(--accent)] font-semibold">02 / RECORD</div>
+          <h3 class="font-serif text-lg font-semibold text-[var(--ink)]">留下一句记录</h3>
+          <p class="font-serif text-sm text-[var(--dim)] leading-relaxed">
+            完成时，为今天留一句话。尚未完成的事可以明天主动沿用，不带自责。
+          </p>
+          <code class="block font-mono text-xs text-[var(--muted)] pt-2">1d1t done "把想法写下来了"</code>
+        </div>
+
+        <div class="space-y-3">
+          <div class="font-mono text-xs text-[var(--accent)] font-semibold">03 / REFLECT</div>
+          <h3 class="font-serif text-lg font-semibold text-[var(--ink)]">看见那些日子</h3>
+          <p class="font-serif text-sm text-[var(--dim)] leading-relaxed">
+            用贡献日历回看走过的轨迹。一天一格，没有完成率，也没有给生活打分。
+          </p>
+          <code class="block font-mono text-xs text-[var(--muted)] pt-2">1d1t calendar</code>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 艺术画册页脚 -->
+  <footer class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-10 border-t border-[var(--border)] flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-[var(--muted)] gap-4">
+    <div>1D1T · One day. One thing. · Take a day. Feel the love in everything.</div>
+    <div>macOS · SQLite · Local First · Zero Telemetry</div>
+  </footer>
+
+  <!-- 页面交互脚本 -->
+  <script>
+    function copyCommand(text, btn) {
+      navigator.clipboard.writeText(text).then(() => {
+        const old = btn.innerHTML;
+        btn.innerHTML = 'copied!';
+        setTimeout(() => { btn.innerHTML = old; }, 1800);
+      });
+    }
+
+    // 动态交互日历生成器（银盐质感 · 专注于事实记录 · 无完成率与评分）
+    function renderActivityMatrix() {
+      const container = document.getElementById('interactive-matrix');
+      const hoverTip = document.getElementById('matrix-hover-tip');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const sampleNotes = [
+        '把想法写下来了',
+        '整理书架，读完了第三章',
+        '完成 SQLite 本地持久化与迁移',
+        '重写模块接口，消除深层冗余',
+        '给阳台的花浇水，在河边散步一小时',
+        '解决 macOS 路径兼容问题',
+        '在安静里写完新版使用文档',
+        '早睡，关掉屏幕听雨声',
+        '重构终端欢迎界面的字符排版',
+        '写完那篇拖延了一周的文章',
+        '归档历史旧代码，放下焦虑',
+        '修好 Homebrew tap 自动打包脚本'
+      ];
+
+      // 16 列 x 7 行 = 112 格。正好点亮 48 天（与底部“共计专注记录：48 天”呼应）
+      // 没有任何完成率、连胜、打分，纯粹记录当天留心并完成的一件事
+      const baseDate = new Date(2026, 8, 23); // 2026-09-23
+      const totalCells = 16 * 7;
+      const litIndices = new Set([
+        1, 2, 4, 7, 8, 10, 13, 15, 16, 19, 21, 22, 25, 27, 28, 30,
+        34, 35, 38, 41, 42, 44, 47, 49, 50, 52, 55, 57, 58, 62, 63, 65,
+        68, 70, 71, 74, 76, 78, 81, 83, 85, 88, 90, 92, 95, 97, 99, 103
+      ]);
+
+      let noteIdx = 0;
+      for (let c = 0; c < 16; c++) {
+        for (let r = 0; r < 7; r++) {
+          const index = c * 7 + r;
+          const isDone = litIndices.has(index);
+          const cell = document.createElement('div');
+
+          // 计算对应日期（最右下角对应最新 2026-09-23）
+          const daysAgo = totalCells - 1 - index;
+          const cellDate = new Date(baseDate.getTime() - daysAgo * 86400000);
+          const y = cellDate.getFullYear();
+          const m = String(cellDate.getMonth() + 1).padStart(2, '0');
+          const d = String(cellDate.getDate()).padStart(2, '0');
+          const dayStr = `${y}-${m}-${d}`;
+
+          const desc = isDone ? sampleNotes[(noteIdx++) % sampleNotes.length] : '';
+
+          cell.className = `w-3.5 h-3.5 rounded-[2px] transition-all duration-150 cursor-pointer ${
+            isDone
+              ? 'bg-[var(--accent)] glow-cell-active hover:scale-125'
+              : 'bg-[var(--border)]/40 border border-[var(--border)] hover:border-[var(--dim)]'
+          }`;
+
+          cell.setAttribute('data-date', dayStr);
+          if (isDone) cell.setAttribute('data-desc', desc);
+
+          cell.onmouseenter = () => {
+            if (hoverTip) {
+              if (isDone) {
+                hoverTip.innerHTML = `<span class="text-[var(--accent)] font-bold">${dayStr}</span>: <span class="text-[var(--ink)] font-normal">${desc}</span>`;
+              } else {
+                hoverTip.innerHTML = `<span class="text-[var(--muted)]">${dayStr}</span>: <span class="text-[var(--muted)] italic">今日未记录重点</span>`;
+              }
+            }
+          };
+
+          container.appendChild(cell);
+        }
+      }
+
+      container.onmouseleave = () => {
+        if (hoverTip) {
+          hoverTip.innerHTML = '<span class="text-[var(--dim)]">悬停在方格上查看当日记录</span>';
+        }
+      };
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderActivityMatrix();
+    });
+  </script>
+</body>
+</html>

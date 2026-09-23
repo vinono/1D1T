@@ -1,11 +1,17 @@
 # 当前欢迎界面品牌图
 
 文件：`terminal-welcome.png`。README 与落地页统一使用此图。
-唯一品牌标语：**Take a day. Feel the love in everything.**
+品牌标语：
+**One day. One thing.**
+**Take a day. Feel the love in everything.**
 
-使用内置 imagegen 编辑原图；已核对文字、Logo、命令与完整画幅。
-`terminal-welcome-concept.*` 和 `terminal-welcome-love.*` 为历史设计素材，不再用于公开页面。
+采用统一的银盐冷灰极简配色（Silver Gelatin：黑白灰阶、纯净银白 Logo、银盐冷光），去除高饱和荧光绿，与落地页完全融为一体。
 
-## 编辑提示词
+## 配色规范
 
-Edit the full terminal welcome screenshot. Remove both old slogan lines beneath the green 1D1T logo. Replace them with one exact sentence: "Take a day. Feel the love in everything." Use crisp off-white monospaced lettering, left aligned in the original slogan region. Preserve the uncropped 1536x1024 frame, window controls and title, green logo, commands, rules, footer, colors and spacing. No second slogan.
+- 背景：深冷黑 / 暗室沉静底色（#0C0C0C）
+- Logo与重点字符：纯净银白（#FFFFFF / #F8F8F8）
+- 正文与命令：清晰中性灰阶（#E0E0E0 / #A0A0A0）
+- 标语：两行对齐排版
+  - One day. One thing.
+  - Take a day. Feel the love in everything.

@@ -3,8 +3,8 @@
 </p>
 
 <h1 align="center">1D1T</h1>
-<p align="center"><strong>Take a day. Feel the love in everything.</strong></p>
-<p align="center"><a href="#开始使用">开始使用</a> · <a href="#日常使用">日常使用</a> · <a href="docs/usage.md">完整指南</a></p>
+<p align="center"><strong>One day. One thing.</strong><br>
+Take a day. Feel the love in everything.</p>
 
 ---
 
@@ -91,27 +91,9 @@ brew install vinono/tap/1d1t
 从任何目录运行命令，都会读取同一份数据。退出所有 1D1T 命令后，复制整个数据目录即可备份。
 移除命令链接不会删除记录。
 
-需要独立的数据目录时，可使用 `--data-dir` 或 `ONED1T_DATA_DIR` 环境变量，详见 [使用指南](docs/usage.md#数据)。
-
-## 文档与开发
-
-| 文档 | 内容 |
-| --- | --- |
-| [使用指南](docs/usage.md) | 命令、日期规则与独立数据目录 |
-| [Homebrew 安装](docs/homebrew.md) | Homebrew 安装、升级与卸载 |
-| [数据格式](docs/storage.md) | SQLite 结构与数据约定 |
-| [落地页部署](docs/pages.md) | `site/` 静态页面与 GitHub Pages 配置 |
-
-第一版专注终端体验。后续计划是读取同一份本地记录的原生 macOS App，目前尚未实现。
-
-在项目根目录运行测试，测试数据使用临时目录：
-
-```sh
-python3 -m unittest discover -s tests -v
-```
-
-品牌名为 **1D1T**，终端命令为 `1d1t`，内部 Python 包为 `oneDayOneThing`。
+需要独立的数据目录时，可使用 `--data-dir` 或 `ONE_DAY_ONE_THING_DATA_DIR` 环境变量，详见 [使用指南](docs/usage.md#数据)。
 
 ---
 
-<p align="center"><em>Take a day. Feel the love in everything.</em></p>
+<p align="center"><em>One day. One thing.<br>
+Take a day. Feel the love in everything.</em></p>
