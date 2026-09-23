@@ -24,6 +24,7 @@ jobs:
         run: |
           mkdir -p _site/assets
           cp site/index.html _site/
+          cp site/favicon.* _site/ 2>/dev/null || true
           cp assets/terminal-welcome.png assets/1d1t-icon.png _site/assets/
       - uses: actions/upload-pages-artifact@v3
         with:
