@@ -17,7 +17,7 @@
 ```sh
 mkdir -p dist/pages/assets
 cp site/index.html site/style.css site/script.js dist/pages/
-cp assets/terminal-welcome-concept.png assets/1d1t-icon.png dist/pages/assets/
+cp assets/terminal-welcome.png assets/1d1t-icon.png dist/pages/assets/
 python3 -m http.server 8080 --bind 127.0.0.1 --directory dist/pages
 ```
 

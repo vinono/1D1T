@@ -24,7 +24,7 @@ class OneDayOneThing < Formula
 
   test do
     ENV["ONED1T_DATA_DIR"] = (testpath/"data").to_s
-    assert_match "ONE DAY. ONE THING.", shell_output("#{bin}/1d1t welcome")
+    assert_match "Take a day. Feel the love in everything.", shell_output("#{bin}/1d1t welcome")
     assert_match "brew test focus", shell_output("#{bin}/1d1t add 'brew test focus'")
     assert_match "已完成", shell_output("#{bin}/1d1t done")
     assert_match "完成 1 天", shell_output("#{bin}/1d1t stats --week")

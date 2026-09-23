@@ -1,4 +1,12 @@
-# 1D1T 图标
+# 1D1T 品牌素材
+
+唯一品牌标语：**Take a day. Feel the love in everything.**
+
+当前欢迎界面图为 [`terminal-welcome.png`](terminal-welcome.png)，用于 README 与落地页。
+编辑说明与提示词见 [terminal-welcome.md](terminal-welcome.md)。
+旧的 `terminal-welcome-concept.*`、`terminal-welcome-love.*` 仅保留为历史设计素材。
+
+## 图标
 
 `1d1t-icon.png`：使用内置 imagegen 生成的方形 PNG 图标。
 设计为深石墨色圆角底、浅薄荷色终端提示符、单个亮绿色光标方格和 1D1T 字标。

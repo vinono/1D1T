@@ -1,5 +1,7 @@
 # 歌词意译版欢迎界面
 
+> 历史设计记录，不再用于当前页面。现行素材与唯一标语见 [terminal-welcome.md](terminal-welcome.md)。
+
 文件：`terminal-welcome-love.png`。使用内置 imagegen 编辑原欢迎界面效果图，尚未接入实际 CLI。
 
 原句：喜歡花一天 感覺一切是愛

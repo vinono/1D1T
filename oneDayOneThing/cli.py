@@ -11,7 +11,7 @@ import unicodedata
 from . import __version__
 from .calendar import calendar_range, show_calendar
 from .store import Store, UserError
-from .terminal import BOLD, GREEN, MUTED, header, hint, paint, welcome
+from .terminal import BOLD, GREEN, MUTED, TAGLINE, header, hint, paint, welcome
 
 
 def clean_text(value):
@@ -26,7 +26,7 @@ def clean_text(value):
 
 
 def parser():
-    app = argparse.ArgumentParser(prog="1d1t", description="今天，只做一件重要的事。")
+    app = argparse.ArgumentParser(prog="1d1t", description=TAGLINE)
     app.add_argument("--version", action="version", version=f"1d1t {__version__}")
     app.add_argument("--data-dir", type=Path, help="指定数据目录（默认使用用户目录）")
     commands = app.add_subparsers(dest="command", title="命令")

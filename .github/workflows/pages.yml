@@ -2,7 +2,7 @@ name: Deploy landing page
 on:
   push:
     branches: [main]
-    paths: ['site/**', 'assets/terminal-welcome-concept.png', 'assets/1d1t-icon.png', '.github/workflows/pages.yml']
+    paths: ['site/**', 'assets/terminal-welcome.png', 'assets/1d1t-icon.png', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,7 +24,7 @@ jobs:
         run: |
           mkdir -p _site/assets
           cp site/index.html site/style.css site/script.js _site/
-          cp assets/terminal-welcome-concept.png assets/1d1t-icon.png _site/assets/
+          cp assets/terminal-welcome.png assets/1d1t-icon.png _site/assets/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

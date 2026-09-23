@@ -5,6 +5,8 @@ import shutil
 import sys
 
 
+TAGLINE = "Take a day. Feel the love in everything."
+
 GREEN = "92"
 MUTED = "90"
 CYAN = "36"
@@ -51,8 +53,7 @@ def welcome():
     else:
         print(paint("  > 1D1T", GREEN))
     print()
-    for text in ("ONE DAY. ONE THING.", "Take a day. Feel the love in everything."):
-        print(textwrap.fill(text, width=max(12, width() - 2), initial_indent="  ", subsequent_indent="  "))
+    print(textwrap.fill(TAGLINE, width=max(12, width() - 2), initial_indent="  ", subsequent_indent="  "))
     print()
     rule()
     for command in ('1d1t add "今日重点"', '1d1t done', '1d1t calendar', '1d1t --help'):

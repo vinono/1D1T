@@ -30,13 +30,13 @@ class CLITest(unittest.TestCase):
     def test_welcome_does_not_create_database_and_first_launch_shows_branding(self):
         code, output, _ = self.run_cli("welcome")
         self.assertEqual(code, 0)
-        self.assertIn("ONE DAY. ONE THING.", output)
+        self.assertNotIn("ONE DAY. ONE THING.", output)
         self.assertIn("Take a day. Feel the love in everything.", output)
         self.assertFalse((Path(self.temp.name) / "focus.sqlite3").exists())
-        self.assertIn("ONE DAY. ONE THING.", self.run_cli()[1])
+        self.assertIn("Take a day. Feel the love in everything.", self.run_cli()[1])
         self.run_cli("add", "今日重点")
-        self.assertNotIn("ONE DAY. ONE THING.", self.run_cli()[1])
-        self.assertNotIn("ONE DAY. ONE THING.", self.run_cli("today")[1])
+        self.assertNotIn("Take a day. Feel the love in everything.", self.run_cli()[1])
+        self.assertNotIn("Take a day. Feel the love in everything.", self.run_cli("today")[1])
 
     def test_add_is_persistent_and_never_overwrites_today(self):
         self.assertEqual(self.run_cli("add", "完成博客首页")[0], 0)

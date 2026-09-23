@@ -1,5 +1,7 @@
 # 安装欢迎界面概念图
 
+> 历史设计记录，不再用于当前页面。现行素材与唯一标语见 [terminal-welcome.md](terminal-welcome.md)。
+
 文件：`terminal-welcome-concept.png`。使用内置 imagegen 生成。
 这是设计效果图，尚未接入安装器。图中的 Homebrew 命令为场景示意，项目尚未发布到 Homebrew。
 

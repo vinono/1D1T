@@ -3,9 +3,7 @@
 </p>
 
 <h1 align="center">1D1T</h1>
-<p align="center"><strong>ONE DAY. ONE THING.</strong><br>
-Take a day. Feel the love in everything.</p>
-<p align="center">每天，留心一件重要的事。</p>
+<p align="center"><strong>Take a day. Feel the love in everything.</strong></p>
 <p align="center"><a href="#开始使用">开始使用</a> · <a href="#日常使用">日常使用</a> · <a href="docs/usage.md">完整指南</a></p>
 
 ---
@@ -29,7 +27,7 @@ Take a day. Feel the love in everything.</p>
 
 贡献日历中，一天最多点亮一格，表示这一天有完成记录。没有完成率，也没有评分。
 
-![1D1T 终端欢迎界面设计预览](assets/terminal-welcome-concept.png)
+![1D1T 终端欢迎界面设计预览](assets/terminal-welcome.png)
 
 ## 开始使用
 
