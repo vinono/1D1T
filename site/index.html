@@ -30,7 +30,8 @@
 <section id="install" class="install" aria-labelledby="install-title">
 <div><p class="eyebrow">READY WHEN YOU ARE.</p><h2 id="install-title">打开终端。<br>从今天开始。</h2><p>用 Homebrew 安装，依赖自动就绪。<br>然后，留心今天的一件事。</p><a class="release" href="https://github.com/vinono/1D1T/releases/tag/v0.1.0">v0.1.0 发布说明 ↗</a></div>
 <div class="install-code"><div class="code-title"><span>TERMINAL / 安装</span><button type="button" id="copy-install" aria-label="复制 Homebrew 安装命令">复制命令</button></div><pre><code id="install-command">brew tap vinono/tap
-brew install 1d1t</code></pre><p id="copy-status" role="status" aria-live="polite"></p><p>安装后，在任意目录开始：</p><pre class="first-command"><code>1d1t add "做一件值得记住的事"</code></pre><p>需要 macOS 和 <a href="https://brew.sh/">Homebrew</a>。Python 由 Homebrew 自动安装。</p><a href="https://github.com/vinono/1D1T/blob/main/docs/homebrew.md">安装、升级与卸载指南 →</a></div>
+brew install 1d1t</code></pre><p id="copy-status" role="status" aria-live="polite"></p><p>若 Homebrew 提示 <code>untrusted tap</code>，先运行：</p><pre class="first-command"><code>brew trust --formula \
+  vinono/tap/one-day-one-thing</code></pre><p>再重试安装，然后在任意目录开始：</p><pre class="first-command"><code>1d1t add "做一件值得记住的事"</code></pre><p>需要 macOS 和 <a href="https://brew.sh/">Homebrew</a>。Python 由 Homebrew 自动安装。</p><a href="https://github.com/vinono/1D1T/blob/main/docs/homebrew.md">安装、升级与卸载指南 →</a></div>
 </section>
 <section class="privacy"><span aria-hidden="true">[ local ]</span><div><h2>你的记录，留在你的电脑里。</h2><p>无需账号。数据保存在本机 SQLite 中，卸载命令也不会删除记录。当前版本专注终端，未来计划提供原生 macOS App。</p></div></section>
 </main><footer><span>1D1T / 今天只做一件事</span><a href="https://github.com/vinono/1D1T">View source ↗</a></footer>

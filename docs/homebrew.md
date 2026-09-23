@@ -10,6 +10,13 @@ brew install 1d1t
 1d1t welcome
 ```
 
+如果 Homebrew 提示 `untrusted tap`，先信任此 Formula，再重试安装：
+
+```sh
+brew trust --formula vinono/tap/one-day-one-thing
+brew install 1d1t
+```
+
 也可以一步安装：
 
 ```sh

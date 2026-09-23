@@ -52,7 +52,9 @@ def main():
     (directory.parent / "README.md").write_text(
         "# 1D1T Homebrew Tap\n\n"
         "```sh\nbrew tap vinono/tap\nbrew install 1d1t\n```\n\n"
-        "One day. One thing. [Usage and source](https://github.com/vinono/1D1T).\n"
+        "One day. One thing. [Usage and source](https://github.com/vinono/1D1T).\n\n"
+        "If Homebrew reports `untrusted tap`, trust this formula and retry:\n\n"
+        "```sh\nbrew trust --formula vinono/tap/one-day-one-thing\nbrew install 1d1t\n```\n"
     )
     print(f"Archive: {archive}\nSHA256: {checksum}\nFormula: {directory / 'one-day-one-thing.rb'}")
 

@@ -1,16 +1,15 @@
 # GitHub About
 
-目标仓库：https://github.com/vinono/1D1T
+仓库：https://github.com/vinono/1D1T
 
-建议 Description：
+项目主页：https://vinono.github.io/1D1T/
 
-> One day. One thing. A local-first terminal app for one daily focus, with a GitHub-style contribution calendar. 今天只做一件事。
+Description：
 
-当前尚未更新到 GitHub：本机 GitHub CLI 未登录。
+> One day. One thing. A local-first terminal app for one daily focus, with a contribution calendar.
 
-登录后执行：
+核对远端设置：
 
 ```sh
-gh repo edit vinono/1D1T --description "One day. One thing. A local-first terminal app for one daily focus, with a GitHub-style contribution calendar. 今天只做一件事。"
-gh repo view vinono/1D1T --json description,url
+gh repo view vinono/1D1T --json description,homepageUrl,url
 ```
