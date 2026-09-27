@@ -1,9 +1,9 @@
 class OneDayOneThing < Formula
   desc "One focus per day, with a terminal contribution calendar"
   homepage "https://github.com/vinono/1D1T"
-  url @URL@
-  version @VERSION@
-  sha256 @SHA256@
+  url "https://github.com/vinono/1D1T/releases/download/v0.1.1/1d1t-0.1.1.tar.gz"
+  version "0.1.1"
+  sha256 "015adfa0ab4073eeaac70baaca1b5813dba0e945cc1fe987d0809cebcbba18bc"
 
   depends_on "python@3.13"
 

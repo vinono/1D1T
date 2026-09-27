@@ -27,7 +27,7 @@ Take a day. Feel the love in everything.</p>
 
 贡献日历中，一天最多点亮一格，表示这一天有完成记录。没有完成率，也没有评分。
 
-![1D1T 终端欢迎界面设计预览](assets/terminal-welcome.png)
+![1D1T 终端 Welcome 实际运行截图](assets/terminal-welcome.png)
 
 ## 开始使用
 
@@ -57,7 +57,7 @@ Homebrew 会自动安装所需的 Python。也可以使用完整名称一行安�
 brew install vinono/tap/1d1t
 ```
 
-[安装与升级指南](docs/homebrew.md) · [v0.1.0 发布说明](https://github.com/vinono/1D1T/releases/tag/v0.1.0) · [项目主页](https://vinono.github.io/1D1T/)
+[安装与升级指南](docs/homebrew.md) · [v0.1.1 发布说明](https://github.com/vinono/1D1T/releases/tag/v0.1.1) · [项目主页](https://vinono.github.io/1D1T/)
 
 ## 日常使用
 

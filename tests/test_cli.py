@@ -44,7 +44,7 @@ class CLITest(unittest.TestCase):
         code, output, _ = self.run_cli("today")
         self.assertEqual(code, 0)
         self.assertIn("完成博客首页", output)
-        self.assertIn("待完成", output)
+        self.assertIn("Pending", output)
         code, _, error = self.run_cli("add", "另一个重点")
         self.assertEqual(code, 1)
         self.assertIn("edit", error)
@@ -55,7 +55,7 @@ class CLITest(unittest.TestCase):
         self.assertEqual(self.run_cli("edit", "完成首页布局")[0], 0)
         self.assertEqual(self.run_cli("done", "支持手机浏览")[0], 0)
         output = self.run_cli("today")[1]
-        self.assertIn("已完成", output)
+        self.assertIn("Completed", output)
         self.assertIn("支持手机浏览", output)
         self.assertEqual(self.run_cli("edit", "写第二件事")[0], 1)
         self.assertEqual(self.run_cli("add", "写第二件事")[0], 1)
@@ -63,7 +63,7 @@ class CLITest(unittest.TestCase):
         self.assertNotIn("重复记录", self.run_cli("today")[1])
         self.assertEqual(self.run_cli("undo")[0], 0)
         output = self.run_cli("today")[1]
-        self.assertIn("待完成", output)
+        self.assertIn("Pending", output)
         self.assertIn("完成首页布局", output)
         self.assertNotIn("支持手机浏览", output)
         self.assertEqual(self.run_cli("edit", "调整首页布局")[0], 0)
@@ -74,19 +74,19 @@ class CLITest(unittest.TestCase):
         self.assertEqual(self.run_cli("edit", "新内容")[0], 1)
         for text in ("   ", "危险\x1b[2J", "多行\n内容"):
             self.assertEqual(self.run_cli("add", text)[0], 1)
-        self.assertIn("还没有重点", self.run_cli("today")[1])
+        self.assertIn("No focus set for today", self.run_cli("today")[1])
 
     def test_carry_keeps_yesterday_and_backfill_belongs_to_original_day(self):
         yesterday = date(2026, 9, 21)
         self.run_cli("add", "整理照片", day=yesterday)
-        self.assertIn("还没有重点", self.run_cli("today")[1])
+        self.assertIn("No focus set for today", self.run_cli("today")[1])
         self.assertEqual(self.run_cli("carry")[0], 0)
         self.assertIn("整理照片", self.run_cli("today")[1])
-        self.assertIn("待完成", self.run_cli("today", day=yesterday)[1])
+        self.assertIn("Pending", self.run_cli("today", day=yesterday)[1])
         self.assertEqual(self.run_cli("carry")[0], 1)
         self.assertEqual(self.run_cli("done", "昨天其实做完了", "--date", "昨天")[0], 0)
         self.assertIn("昨天其实做完了", self.run_cli("today", day=yesterday)[1])
-        self.assertIn("待完成", self.run_cli("today")[1])
+        self.assertIn("Pending", self.run_cli("today")[1])
 
     def test_backfill_rejects_future_missing_and_invalid_dates(self):
         for value in ("2026-09-23", "2026-09-20", "2026-02-30", "garbage"):
@@ -97,7 +97,7 @@ class CLITest(unittest.TestCase):
         self.run_cli("add", "已完成的事", day=yesterday)
         self.run_cli("done", day=yesterday)
         self.assertEqual(self.run_cli("carry")[0], 1)
-        self.assertIn("还没有重点", self.run_cli("today")[1])
+        self.assertIn("No focus set for today", self.run_cli("today")[1])
 
     def test_statistics_count_original_days_and_history_keeps_pending_days(self):
         for day, title, complete in (
@@ -112,11 +112,11 @@ class CLITest(unittest.TestCase):
         self.run_cli("add", "今日待完成")
         self.run_cli("done", "补记说明", "--date", "昨天")
         week = self.run_cli("stats", "--week")[1]
-        self.assertIn("完成 1 天", week)
+        self.assertIn("1 completed", week)
         self.assertIn("昨天的重点", week)
         self.assertNotIn("上周记录", week)
         month = self.run_cli("stats", "--month")[1]
-        self.assertIn("完成 3 天", month)
+        self.assertIn("3 completed", month)
         self.assertNotIn("八月记录", month)
         self.assertNotIn("%", month)
         history = self.run_cli("history")[1]
@@ -138,29 +138,37 @@ class CLITest(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn("2024-01-01", output)
         self.assertIn("2024-12-31", output)
-        self.assertIn("完成 1 天", output)
+        self.assertIn("1 completed", output)
         self.assertEqual(output.count("■"), 2)  # one day plus the legend
         self.assertNotIn("\x1b", output)
         self.assertNotIn("%", output)
         # Each seven-row panel shows weekdays vertically like GitHub.
-        self.assertGreaterEqual(output.count("周一"), 4)
-        self.assertEqual(output.count("周一"), output.count("周日"))
+        self.assertGreaterEqual(output.count("Mon"), 4)
+        self.assertEqual(output.count("Mon"), output.count("Sun"))
 
     def test_rolling_calendar_and_undo_update_contributions(self):
         self.run_cli("add", "今日重点")
         self.run_cli("done")
         output = self.run_cli("calendar")[1]
-        self.assertIn("完成 1 天", output)
+        self.assertIn("1 completed", output)
         self.assertEqual(output.count("■"), 2)
         self.run_cli("undo")
-        self.assertIn("完成 0 天", self.run_cli("calendar")[1])
+        self.assertIn("0 completed", self.run_cli("calendar")[1])
+
+    def test_calendar_interactive_flag_falls_back_when_not_tty(self):
+        self.run_cli("add", "今日重点")
+        self.run_cli("done", "完成记录")
+        code, output, _ = self.run_cli("calendar", "-i")
+        self.assertEqual(code, 0)
+        self.assertIn("CALENDAR", output)
+        self.assertIn("Mon", output)
 
     def test_week_crosses_year_and_month_stops_at_its_boundary(self):
         for day in (date(2025, 12, 28), date(2025, 12, 29), date(2026, 1, 1)):
             self.run_cli("add", day.isoformat(), day=day)
             self.run_cli("done", day=day)
-        self.assertIn("完成 2 天", self.run_cli("stats", "--week", day=date(2026, 1, 1))[1])
-        self.assertIn("完成 1 天", self.run_cli("stats", "--month", day=date(2026, 1, 1))[1])
+        self.assertIn("2 completed", self.run_cli("stats", "--week", day=date(2026, 1, 1))[1])
+        self.assertIn("1 completed", self.run_cli("stats", "--month", day=date(2026, 1, 1))[1])
 
     def test_executable_uses_same_data_from_other_working_directories(self):
         command = Path(__file__).resolve().parents[1] / "bin" / "1d1t"
@@ -192,7 +200,7 @@ class CLITest(unittest.TestCase):
             env=env, text=True, capture_output=True,
         )
         self.assertEqual(result.returncode, 0)
-        self.assertEqual(result.stdout.count("待完成"), 1)
+        self.assertEqual(result.stdout.count("Pending"), 1)
 
     def test_environment_variable_precedence_and_compatibility(self):
         command = Path(__file__).resolve().parents[1] / "bin" / "1d1t"

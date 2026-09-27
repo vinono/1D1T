@@ -1,6 +1,6 @@
 # GitHub Pages 落地页
 
-页面源码：`site/index.html`。纯静态页面，单文件自包含样式与交互逻辑，无需 Node 或后端。
+页面源码：`site/index.html`。纯静态页面，无需 Node 或后端；布局样式和字体依赖外部 CDN。
 部署工作流仅上传页面和两张品牌图片，不上传程序、数据库或其他文档。
 
 ## 发布
@@ -14,10 +14,13 @@
 
 ## 本地预览
 
-可以直接在浏览器中打开 `site/index.html`，或启动本地 HTTP 服务：
+按部署工作流的目录结构组装预览文件，再启动本地 HTTP 服务：
 
 ```sh
-python3 -m http.server 8080 --bind 127.0.0.1 --directory site
+mkdir -p /tmp/1d1t-pages-preview/assets
+cp site/index.html site/favicon.* /tmp/1d1t-pages-preview/
+cp assets/terminal-welcome.png assets/1d1t-icon.png /tmp/1d1t-pages-preview/assets/
+python3 -m http.server 8080 --bind 127.0.0.1 --directory /tmp/1d1t-pages-preview
 ```
 
 访问 `http://127.0.0.1:8080`。

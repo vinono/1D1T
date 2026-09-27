@@ -8,14 +8,14 @@ import sys
 TAGLINE = "One day. One thing.\nTake a day. Feel the love in everything."
 
 SILVER = "97"
-GREEN = SILVER
+SOFT = "37"
 MUTED = "90"
-CYAN = "36"
-BOLD = "1"
+BOLD = "1;97"
 
 
-def paint(text, color):
-    enabled = sys.stdout.isatty() and "NO_COLOR" not in os.environ and os.environ.get("TERM") != "dumb"
+def paint(text, color, *, stream=None):
+    stream = stream or sys.stdout
+    enabled = stream.isatty() and "NO_COLOR" not in os.environ and os.environ.get("TERM") != "dumb"
     return f"\033[{color}m{text}\033[0m" if enabled else text
 
 
@@ -34,29 +34,43 @@ def header(section, subtitle):
 
 
 def hint(command):
-    print(f"  {paint('$', SILVER)} {command}\n")
+    print(f"  {paint('$', SILVER)} {paint(command, SOFT)}\n")
 
 
 def welcome():
     """Show branding on demand, without opening or changing the database."""
     import textwrap
-    logo = (
-        "  11    DDDD    11   TTTTT",
-        " 111    D   D  111     T  ",
-        "  11    D   D   11     T  ",
-        "  11    D   D   11     T  ",
-        " 1111   DDDD   1111    T  ",
+    glyphs = (
+        ("  ■■  ", " ■■■  ", "   ■  ", "   ■  ", "   ■  ", "■■■■■■"),
+        ("■■■■■ ", "■■  ■■", "■■  ■■", "■■  ■■", "■■  ■■", "■■■■■ "),
+        ("  ■■  ", " ■■■  ", "   ■  ", "   ■  ", "   ■  ", "■■■■■■"),
+        ("■■■■■■■", "   ■■  ", "   ■■  ", "   ■■  ", "   ■■  ", "   ■■  "),
+    )
+    logo = ("  > ▪",) + tuple(
+        "  " + "  ".join(glyph[row] for glyph in glyphs).rstrip()
+        for row in range(6)
     )
     print()
-    if width() >= 32:
+    if width() >= 36:
         for line in logo:
             print(paint(line, SILVER))
     else:
-        print(paint("  > 1D1T", SILVER))
+        print(paint("  > ▪ 1D1T", SILVER))
     print()
     for line in TAGLINE.splitlines():
-        print(textwrap.fill(line, width=max(12, width() - 2), initial_indent="  ", subsequent_indent="  "))
+        print(paint(textwrap.fill(line, width=max(12, width() - 2), initial_indent="  ", subsequent_indent="  "), SOFT))
     print()
     rule()
-    for command in ('1d1t add "今日重点"', '1d1t done', '1d1t calendar', '1d1t --help'):
-        hint(command)
+    print(f"\n  {paint('GET STARTED', BOLD)}\n")
+    items = (
+        ('1d1t add "Ship something small"', "Set today's focus"),
+        ('1d1t done', "Mark it complete"),
+        ('1d1t calendar', "See your contribution grid"),
+    )
+    for cmd, desc in items:
+        if width() < 70:
+            print(f"  {paint(cmd, SILVER)}")
+            print(f"    {paint(desc, MUTED)}")
+        else:
+            print(f"  {paint(cmd.ljust(37), SILVER)} {paint(desc, MUTED)}")
+    print()

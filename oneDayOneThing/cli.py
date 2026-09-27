@@ -11,51 +11,61 @@ import unicodedata
 from . import __version__
 from .calendar import calendar_range, show_calendar
 from .store import Store, UserError
-from .terminal import BOLD, GREEN, MUTED, TAGLINE, header, hint, paint, welcome
+from .terminal import BOLD, MUTED, SILVER, SOFT, TAGLINE, header, hint, paint, welcome
+
+
+class SilverArgumentParser(argparse.ArgumentParser):
+    def format_help(self):
+        return paint(super().format_help(), SOFT)
+
+    def error(self, message):
+        self.print_usage(sys.stderr)
+        self.exit(2, paint(f"1d1t: error: {message}\n", SILVER, stream=sys.stderr))
 
 
 def clean_text(value):
     value = value.strip()
     if not value:
-        raise UserError("内容不能为空。")
+        raise UserError("Content cannot be empty.")
     if any(unicodedata.category(char) in ("Cc", "Cs") for char in value):
-        raise UserError("请使用单行文字，不要包含换行或终端控制字符。")
+        raise UserError("Please use a single line without newlines or terminal control characters.")
     if len(value) > 2000:
-        raise UserError("内容请保持在 2000 个字符以内。")
+        raise UserError("Content must be within 2000 characters.")
     return value
 
 
 def parser():
-    app = argparse.ArgumentParser(prog="1d1t", description=TAGLINE)
+    app = SilverArgumentParser(prog="1d1t", description=TAGLINE)
     app.add_argument("--version", action="version", version=f"1d1t {__version__}")
-    app.add_argument("--data-dir", type=Path, help="指定数据目录（默认使用用户目录）")
-    commands = app.add_subparsers(dest="command", title="命令")
-    add = commands.add_parser("add", help="设置今日唯一重点")
-    add.add_argument("title", help="重点内容，请用引号包围")
-    commands.add_parser("welcome", help="显示 Logo 和使用指引")
-    commands.add_parser("today", help="查看今日重点")
-    edit = commands.add_parser("edit", help="修改今日未完成重点")
-    edit.add_argument("title", help="修改后的重点")
-    done = commands.add_parser("done", help="标记完成，可附一句记录")
-    done.add_argument("note", nargs="?", help="完成说明")
-    done.add_argument("--date", help="补记已有重点：昨天 / yesterday / YYYY-MM-DD")
-    commands.add_parser("undo", help="撤销今日完成状态，同时清除完成说明")
-    commands.add_parser("carry", help="将昨天未完成的重点沿用到今天")
-    stats = commands.add_parser("stats", help="查看完成天数和记录")
+    app.add_argument("--data-dir", type=Path, help="Custom data directory (default: user Application Support)")
+    commands = app.add_subparsers(dest="command", title="Commands")
+    add = commands.add_parser("add", help="Set today's single focus")
+    add.add_argument("title", help="Focus title, please wrap in quotes")
+    commands.add_parser("welcome", help="Show welcome branding and quick start guide")
+    commands.add_parser("today", help="View today's focus")
+    edit = commands.add_parser("edit", help="Edit today's pending focus")
+    edit.add_argument("title", help="New focus title")
+    done = commands.add_parser("done", help="Mark focus completed, with an optional note")
+    done.add_argument("note", nargs="?", help="Optional completion note")
+    done.add_argument("--date", help="Complete an existing focus: yesterday / YYYY-MM-DD")
+    commands.add_parser("undo", help="Undo today's completion and clear note")
+    commands.add_parser("carry", help="Carry over yesterday's unfinished focus to today")
+    stats = commands.add_parser("stats", help="View completed days and focus records")
     period = stats.add_mutually_exclusive_group()
-    period.add_argument("--week", action="store_true", help="本周（默认，周一开始）")
-    period.add_argument("--month", action="store_true", help="本月")
-    history = commands.add_parser("history", help="查看历史事项，包含待完成事项")
-    history.add_argument("--limit", type=positive_int, default=30, help="最多显示几条（默认 30）")
-    calendar = commands.add_parser("calendar", help="查看 GitHub 风格贡献日历（默认最近 12 周）")
-    calendar.add_argument("--year", type=calendar_year, help="查看指定年份，例如 2026")
+    period.add_argument("--week", action="store_true", help="This week (default, starts Monday)")
+    period.add_argument("--month", action="store_true", help="This month")
+    history = commands.add_parser("history", help="View focus history log, including pending items")
+    history.add_argument("--limit", type=positive_int, default=30, help="Maximum records to display (default: 30)")
+    calendar = commands.add_parser("calendar", help="View contribution calendar grid (default: last 12 weeks)")
+    calendar.add_argument("--year", type=calendar_year, help="View specified year, e.g. 2026")
+    calendar.add_argument("-i", "--interactive", action="store_true", help="Enter interactive calendar explorer mode (navigate with arrow keys)")
     return app
 
 
 def calendar_year(value):
     number = positive_int(value)
     if not 1900 <= number <= 9998:
-        raise argparse.ArgumentTypeError("年份范围为 1900–9998。")
+        raise argparse.ArgumentTypeError("Year must be between 1900 and 9998.")
     return number
 
 
@@ -66,7 +76,7 @@ def positive_int(value):
             return number
     except ValueError:
         pass
-    raise argparse.ArgumentTypeError("请输入大于 0 的整数。")
+    raise argparse.ArgumentTypeError("Please enter an integer greater than 0.")
 
 
 def completion_day(value, today):
@@ -79,37 +89,37 @@ def completion_day(value, today):
         if result.isoformat() != value:
             raise ValueError
     except ValueError:
-        raise UserError("日期请使用 YYYY-MM-DD 或「昨天」。") from None
+        raise UserError("Date format must be YYYY-MM-DD or 'yesterday'.") from None
     if result > today:
-        raise UserError("不能为未来日期标记完成。")
+        raise UserError("Cannot mark completion for future dates.")
     return result
 
 
 def show_focus(row, day):
     header("FOCUS", day.isoformat())
     if row is None:
-        print(f"\n  {paint('[ ]', MUTED)} 今天还没有重点。\n")
-        hint('1d1t add "一件重要的事"')
+        print(f"\n  {paint('[ ]', MUTED)} No focus set for today.\n")
+        hint('1d1t add "One important thing"')
     else:
-        marker = paint("[+] 已完成", GREEN) if row["done_at"] else paint("[ ] 待完成", MUTED)
+        marker = paint("[+] Completed", SILVER) if row["done_at"] else paint("[ ] Pending", MUTED)
         print(f"\n  {marker}")
         print(f"  {paint('│', MUTED)} {paint(row['title'], BOLD)}")
         if row["note"]:
-            print(f"  {paint('└', MUTED)} {row['note']}")
+            print(f"  {paint('└', MUTED)} {paint(row['note'], SOFT)}")
         if row["source_day"]:
-            print("  " + paint(f"↳ 沿用自 {row['source_day']}", MUTED))
+            print("  " + paint(f"↳ Carried over from {row['source_day']}", MUTED))
         print()
 
 
 def show_records(rows):
     if not rows:
-        print("  暂无记录。\n")
+        print("  No records found.\n")
     for row in rows:
-        symbol = paint("+", GREEN) if row["done_at"] else paint("·", MUTED)
-        state = "已完成" if row["done_at"] else "待完成"
-        print(f"  {paint(row['day'], MUTED)}  {symbol} {state}  {row['title']}")
+        symbol = paint("+", SILVER) if row["done_at"] else paint("·", MUTED)
+        state = "Completed" if row["done_at"] else "Pending"
+        print(f"  {paint(row['day'], MUTED)}  {symbol} {paint(f'{state:<9}', SILVER if row['done_at'] else MUTED)}  {paint(row['title'], SOFT)}")
         if row["note"]:
-            print(f"              {paint('└', MUTED)} {row['note']}")
+            print(f"              {paint('└', MUTED)} {paint(row['note'], SOFT)}")
     print()
 
 
@@ -136,16 +146,19 @@ def main(argv=None, *, today=None):
             start = today.replace(day=1) if args.month else today - timedelta(days=today.weekday())
             rows = store.records(start, today, completed_only=True)
             header("MONTH" if args.month else "WEEK", f"{start} → {today}")
-            print(f"  {paint(f'{len(rows):02d}', GREEN)} {paint('DAYS', MUTED)}  ·  完成 {len(rows)} 天\n")
+            print(f"  {paint(f'{len(rows):02d}', SILVER)} {paint('DAYS', MUTED)}  ·  {len(rows)} completed\n")
             show_records(rows)
             return 0
         if args.command == "history":
-            header("LOG", f"历史事项 · 最近 {args.limit} 条")
+            header("LOG", f"History · Last {args.limit} records")
             print()
             show_records(store.records(date.min, today, limit=args.limit))
             return 0
         if args.command == "calendar":
             start, end = calendar_range(today, args.year)
+            if args.interactive:
+                from .interactive import run_interactive_calendar
+                return run_interactive_calendar(start, end, today, store.records(start, min(end, today)))
             show_calendar(start, end, today, store.records(start, min(end, today), completed_only=True))
             return 0
         if args.command == "add":
@@ -155,7 +168,7 @@ def main(argv=None, *, today=None):
         elif args.command == "done":
             existing = store.get(target)
             if existing and existing["done_at"]:
-                print("  已有完成记录，保留原记录。")
+                print("  " + paint("Existing completed record found; kept original.", MUTED))
             row = store.done(target, note)
         elif args.command == "undo":
             row = store.undo(today)
@@ -168,7 +181,7 @@ def main(argv=None, *, today=None):
         show_focus(row, target)
         return 0
     except (UserError, OSError, sqlite3.Error) as error:
-        print(f"1d1t: {error}", file=sys.stderr)
+        print(paint(f"1d1t: {error}", SILVER, stream=sys.stderr), file=sys.stderr)
         return 1
     finally:
         if store:

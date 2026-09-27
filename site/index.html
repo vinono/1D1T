@@ -1,305 +1,501 @@
 <!doctype html>
 <html class="dark" lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>1D1T — One day. One thing. Take a day. Feel the love in everything.</title>
-  <meta name="description" content="1D1T：在终端选定今日唯一重点，用贡献日历记录日子。离线使用，数据留在本机，无完成率与评分。">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230c0c0c'/%3E%3Cpath d='M17 19l13 13-13 13' fill='none' stroke='%23ffffff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Crect x='36' y='21' width='14' height='14' rx='2' fill='%23ffffff'/%3E%3C/svg%3E">
-  <link rel="icon" type="image/png" href="assets/1d1t-icon.png?v=silver">
-  <link rel="shortcut icon" href="favicon.ico?v=silver">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      1D1T — One day. One thing. Take a day. Feel the love in everything.
+    </title>
+    <meta
+      name="description"
+      content="1D1T：在终端选定今日唯一重点，用贡献日历记录日子。离线使用，数据留在本机，无完成率与评分。"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230c0c0c'/%3E%3Cpath d='M17 19l13 13-13 13' fill='none' stroke='%23ffffff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Crect x='36' y='21' width='14' height='14' rx='2' fill='%23ffffff'/%3E%3C/svg%3E"
+    />
+    <link rel="icon" type="image/png" href="assets/1d1t-icon.png?v=solid" />
+    <link rel="shortcut icon" href="favicon.ico?v=solid" />
 
-  <!-- Google Fonts: Inter, JetBrains Mono, Noto Serif SC -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Noto+Serif+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Inter, JetBrains Mono, Noto Serif SC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Noto+Serif+SC:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ["Inter", "-apple-system", "system-ui", "sans-serif"],
-            mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
-            serif: ["Noto Serif SC", "Songti SC", "SimSun", "Georgia", "serif"]
-          }
-        }
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "-apple-system", "system-ui", "sans-serif"],
+              mono: [
+                "JetBrains Mono",
+                "ui-monospace",
+                "SFMono-Regular",
+                "Menlo",
+                "Consolas",
+                "monospace",
+              ],
+              serif: [
+                "Noto Serif SC",
+                "Songti SC",
+                "SimSun",
+                "Georgia",
+                "serif",
+              ],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      pre,
+      code {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
       }
-    };
-  </script>
-  <style>
-    pre, code { font-family: "JetBrains Mono", ui-monospace, monospace; }
 
-    /* 银盐冷灰 (Silver Gelatin) 极简纯净体系 */
-    :root {
-      --bg: #0C0C0C;
-      --surface: #141414;
-      --border: #242424;
-      --ink: #F5F5F5;
-      --dim: #A0A0A0;
-      --muted: #666666;
-      --accent: #FFFFFF;
-      --card-frame: #070707;
-      --btn-bg: #FFFFFF;
-      --btn-text: #0C0C0C;
-    }
+      /* 银盐冷灰 (Silver Gelatin) 极简纯净体系 */
+      :root {
+        --bg: #0c0c0c;
+        --surface: #141414;
+        --border: #242424;
+        --ink: #f5f5f5;
+        --dim: #a0a0a0;
+        --muted: #666666;
+        --accent: #ffffff;
+        --card-frame: #070707;
+        --btn-bg: #ffffff;
+        --btn-text: #0c0c0c;
+      }
 
-    body {
-      background-color: var(--bg);
-      color: var(--ink);
-    }
+      body {
+        background-color: var(--bg);
+        color: var(--ink);
+      }
 
-    .glow-cell-active {
-      box-shadow: 0 0 7px rgba(255, 255, 255, 0.65);
-    }
-  </style>
-</head>
-<body class="min-h-screen flex flex-col font-sans">
+      .glow-cell-active {
+        box-shadow: 0 0 7px rgba(255, 255, 255, 0.65);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col font-sans">
+    <!-- 顶部画廊 Header -->
+    <header
+      class="w-full max-w-7xl mx-auto px-6 sm:px-8 py-7 flex items-center justify-between border-b border-[var(--border)]"
+    >
+      <div class="flex items-baseline gap-3">
+        <span
+          class="font-mono text-xl font-bold tracking-tight text-[var(--ink)]"
+          >1D1T</span
+        >
+        <span class="font-serif text-xs text-[var(--dim)] italic"
+          >One Day One Thing</span
+        >
+      </div>
 
-  <!-- 顶部画廊 Header -->
-  <header class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-7 flex items-center justify-between border-b border-[var(--border)]">
-    <div class="flex items-baseline gap-3">
-      <span class="font-mono text-xl font-bold tracking-tight text-[var(--ink)]">1D1T</span>
-      <span class="font-serif text-xs text-[var(--dim)] italic">One Day One Thing</span>
-    </div>
+      <nav
+        class="flex items-center space-x-6 text-xs font-mono tracking-widest uppercase text-[var(--dim)]"
+      >
+        <a href="#install" class="hover:text-[var(--accent)] transition-colors"
+          >安装</a
+        >
+        <a
+          href="https://github.com/vinono/1D1T/blob/main/docs/usage.md"
+          class="hover:text-[var(--accent)] transition-colors"
+          >文档</a
+        >
+        <a
+          href="https://github.com/vinono/1D1T"
+          target="_blank"
+          class="hover:text-[var(--accent)] transition-colors"
+          >GitHub ↗</a
+        >
+      </nav>
+    </header>
 
-    <nav class="flex items-center space-x-6 text-xs font-mono tracking-widest uppercase text-[var(--dim)]">
-      <a href="#install" class="hover:text-[var(--accent)] transition-colors">安装</a>
-      <a href="https://github.com/vinono/1D1T/blob/main/docs/usage.md" class="hover:text-[var(--accent)] transition-colors">文档</a>
-      <a href="https://github.com/vinono/1D1T" target="_blank" class="hover:text-[var(--accent)] transition-colors">GitHub ↗</a>
-    </nav>
-  </header>
+    <!-- 主体海报排版 -->
+    <main
+      class="w-full max-w-7xl mx-auto px-6 sm:px-8 py-16 flex-1 space-y-16 sm:space-y-20"
+    >
+      <div
+        class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center"
+      >
+        <!-- 左侧：文学诗性排版 -->
+        <div class="lg:col-span-6 xl:col-span-5 space-y-8">
+          <h1
+            class="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-[var(--ink)] leading-[1.18]"
+          >
+            喜歡花一天<br />
+            <span class="text-[var(--accent)] font-serif italic"
+              >感覺一切是爱。</span
+            >
+          </h1>
 
-  <!-- 主体海报排版 -->
-  <main class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-16 flex-1 space-y-16 sm:space-y-20">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-      <!-- 左侧：文学诗性排版 -->
-      <div class="lg:col-span-6 space-y-8">
-        <p class="font-mono text-xs tracking-widest text-[var(--accent)] uppercase">
-          [ ISSUE 01 — FOCUS IN QUIET ]
-        </p>
+          <p
+            class="font-mono text-sm text-[var(--dim)] leading-relaxed tracking-wide"
+          >
+            One day. One thing.<br />
+            Take a day. Feel the love in everything.
+          </p>
 
-        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-[var(--ink)] leading-[1.18]">
-          喜歡花一天<br>
-          <span class="text-[var(--accent)] font-serif italic">感覺一切是爱。</span>
-        </h1>
+          <div class="h-[1px] w-24 bg-[var(--border)]"></div>
 
-        <p class="font-mono text-sm text-[var(--dim)] leading-relaxed tracking-wide">
-          One day. One thing.<br>
-          Take a day. Feel the love in everything.
-        </p>
+          <p class="font-serif text-base text-[var(--dim)] leading-relaxed">
+            在这个充斥着红点推送与无限待办清单的世界里，1D1T
+            试图给你的终端留出一片安静的空地。<br />
+            清晨选定今天唯一的一件事，黄昏留下一句真实的记录。
+          </p>
 
-        <div class="h-[1px] w-24 bg-[var(--border)]"></div>
-
-        <p class="font-serif text-base text-[var(--dim)] leading-relaxed">
-          在这个充斥着红点推送与无限待办清单的世界里，1D1T 试图给你的终端留出一片安静的空地。<br>
-          清晨选定今天唯一的一件事；黄昏留下一句真实的记录。
-        </p>
-
-        <!-- 快速安装栏（银盐配色 · 命令行换行 · copy） -->
-        <div class="pt-4 space-y-3" id="install">
-          <div class="p-4 bg-[var(--surface)] border border-[var(--border)] rounded-md flex items-center justify-between font-mono text-xs shadow-sm">
-            <div class="space-y-1.5 leading-relaxed font-mono">
-              <div class="flex items-center gap-2">
-                <span class="text-[var(--dim)] select-none">$</span>
-                <span class="text-[var(--ink)] font-medium">brew tap vinono/tap</span>
+          <!-- 快速安装栏（银盐配色 · 命令行换行 · copy） -->
+          <div class="pt-4 space-y-3" id="install">
+            <div
+              class="p-4 bg-[var(--surface)] border border-[var(--border)] rounded-md flex items-center justify-between font-mono text-xs shadow-sm"
+            >
+              <div class="space-y-1.5 leading-relaxed font-mono">
+                <div class="flex items-center gap-2">
+                  <span class="text-[var(--dim)] select-none">$</span>
+                  <span class="text-[var(--ink)] font-medium"
+                    >brew tap vinono/tap</span
+                  >
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[var(--dim)] select-none">$</span>
+                  <span class="text-[var(--ink)] font-medium"
+                    >brew install 1d1t</span
+                  >
+                </div>
               </div>
-              <div class="flex items-center gap-2">
-                <span class="text-[var(--dim)] select-none">$</span>
-                <span class="text-[var(--ink)] font-medium">brew install 1d1t</span>
+              <button
+                onclick="
+                  copyCommand('brew tap vinono/tap && brew install 1d1t', this)
+                "
+                class="ml-4 px-3.5 py-1.5 bg-[var(--btn-bg)] text-[var(--btn-text)] rounded hover:opacity-90 transition-all font-mono text-xs font-semibold tracking-wide"
+              >
+                copy
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧：终端欢迎界面展示 -->
+        <div class="lg:col-span-6 xl:col-span-7">
+          <div
+            class="overflow-hidden rounded-xl border border-[var(--border)] shadow-2xl transition-all duration-300 hover:border-[var(--accent)]/40"
+          >
+            <img
+              src="assets/terminal-welcome.png"
+              alt="1D1T Welcome 命令在终端中的实际运行截图"
+              class="w-full h-auto object-cover block"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- 交互体验矩阵：ACTIVITY MATRIX (银盐质感 · 事实记录展台 · 无完成率与评分) -->
+      <section
+        class="p-6 sm:p-8 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-xl space-y-4"
+      >
+        <div
+          class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--border)]/60"
+        >
+          <div
+            class="flex items-center gap-2.5 font-mono text-xs text-[var(--dim)]"
+          >
+            <span
+              class="w-2.5 h-2.5 rounded-full bg-[var(--accent)] glow-cell-active inline-block"
+            ></span>
+            <span class="tracking-wider font-semibold uppercase"
+              >ACTIVITY MATRIX (最近 12 周示例预览)</span
+            >
+          </div>
+          <div
+            id="matrix-hover-tip"
+            class="font-mono text-xs text-[var(--dim)] truncate min-h-[1.5em] flex items-center"
+          >
+            悬停在方格上查看当日记录
+          </div>
+        </div>
+
+        <!-- 12 周矩阵容器（带月标头与星期标尺） -->
+        <div class="overflow-x-auto py-2">
+          <div class="inline-block min-w-max">
+            <!-- 上方月份跨度行 -->
+            <div
+              id="matrix-months"
+              class="flex gap-2 font-mono text-[11px] text-[var(--muted)] pl-12 mb-1.5 select-none"
+            ></div>
+
+            <div class="flex items-start gap-2.5">
+              <!-- 左侧星期标尺 -->
+              <div
+                class="flex flex-col gap-2 font-mono text-[10px] text-[var(--muted)] pt-0.5 select-none text-right w-8"
+              >
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+                <span>Sun</span>
+              </div>
+
+              <!-- 分隔竖线 -->
+              <div
+                class="w-[1px] bg-[var(--border)] self-stretch my-0.5 opacity-60"
+              ></div>
+
+              <!-- 12 周方块矩阵 (7 行 x 12 列) -->
+              <div
+                class="grid grid-flow-col grid-rows-7 gap-2"
+                id="interactive-matrix"
+              >
+                <!-- 由 JS 渲染 -->
               </div>
             </div>
-            <button onclick="copyCommand('brew tap vinono/tap && brew install 1d1t', this)" class="ml-4 px-3.5 py-1.5 bg-[var(--btn-bg)] text-[var(--btn-text)] rounded hover:opacity-90 transition-all font-mono text-xs font-semibold tracking-wide">
-              copy
-            </button>
           </div>
-          <p class="text-[11px] font-mono text-[var(--muted)]">
-            * 依赖由 Homebrew 自动就绪，离线使用，数据永不出本机。
-          </p>
         </div>
-      </div>
 
-      <!-- 右侧：艺术装裱展示终端欢迎图 -->
-      <div class="lg:col-span-6">
-        <figure class="p-3.5 bg-[var(--card-frame)] border border-[var(--border)] rounded-lg shadow-xl group transition-all">
-          <div class="relative overflow-hidden rounded border border-[var(--border)]">
-            <img src="assets/terminal-welcome.png" alt="1D1T 终端欢迎界面" class="w-full h-auto object-cover transform transition-transform duration-500 group-hover:scale-[1.01]" />
+        <!-- 底部图例与无完成率说明（与 Terminal 含义一致） -->
+        <div
+          class="flex flex-col sm:flex-row sm:items-center justify-between pt-3 border-t border-[var(--border)]/60 text-xs font-mono text-[var(--muted)] gap-2"
+        >
+          <div class="flex items-center gap-4">
+            <span class="flex items-center gap-1.5"
+              ><span
+                class="w-3.5 h-3.5 rounded-[2px] bg-[var(--accent)] glow-cell-active"
+              ></span>
+              已记录</span
+            >
+            <span class="flex items-center gap-1.5"
+              ><span
+                class="w-3.5 h-3.5 rounded-[2px] bg-[var(--border)]/40 border border-[var(--border)]"
+              ></span>
+              无记录</span
+            >
+            <span class="flex items-center gap-1.5"
+              ><span
+                class="w-3.5 h-3.5 rounded-[2px] border-2 border-[var(--accent)] bg-transparent"
+              ></span>
+              今天</span
+            >
           </div>
-          <figcaption class="mt-3 flex items-center justify-between font-mono text-[11px] text-[var(--muted)] px-1">
-            <span>FIG. 01 — 终端欢迎界面设计画幅</span>
-            <span>1536 × 1024</span>
-          </figcaption>
-        </figure>
+          <div class="text-[var(--dim)]">
+            示例已记录：<strong class="text-[var(--ink)] font-bold"
+              ><span id="matrix-recorded-count">0</span> 天</strong
+            >
+            · 没有完成率与评分
+          </div>
+        </div>
+      </section>
+
+      <!-- 极简三步曲 -->
+      <section class="pt-8 border-t border-[var(--border)]">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div class="space-y-3">
+            <div class="font-mono text-xs text-[var(--accent)] font-semibold">
+              01 / CHOOSE
+            </div>
+            <h3 class="font-serif text-lg font-semibold text-[var(--ink)]">
+              选定今日重点
+            </h3>
+            <p class="font-serif text-sm text-[var(--dim)] leading-relaxed">
+              一天只有一个重点。想清楚今天最重要的事，输入命令，而后放下手机开始。
+            </p>
+            <code class="block font-mono text-xs text-[var(--muted)] pt-2"
+              >1d1t add "写完那篇文章"</code
+            >
+          </div>
+
+          <div class="space-y-3">
+            <div class="font-mono text-xs text-[var(--accent)] font-semibold">
+              02 / RECORD
+            </div>
+            <h3 class="font-serif text-lg font-semibold text-[var(--ink)]">
+              留下一句记录
+            </h3>
+            <p class="font-serif text-sm text-[var(--dim)] leading-relaxed">
+              完成时，为今天留一句话。尚未完成的事可以明天主动沿用，不带自责。
+            </p>
+            <code class="block font-mono text-xs text-[var(--muted)] pt-2"
+              >1d1t done "把想法写下来了"</code
+            >
+          </div>
+
+          <div class="space-y-3">
+            <div class="font-mono text-xs text-[var(--accent)] font-semibold">
+              03 / REFLECT
+            </div>
+            <h3 class="font-serif text-lg font-semibold text-[var(--ink)]">
+              看见那些日子
+            </h3>
+            <p class="font-serif text-sm text-[var(--dim)] leading-relaxed">
+              用贡献日历回看走过的轨迹。一天一格，没有完成率，也没有给生活打分。
+            </p>
+            <code class="block font-mono text-xs text-[var(--muted)] pt-2"
+              >1d1t calendar</code
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 艺术画册页脚 -->
+    <footer
+      class="w-full max-w-7xl mx-auto px-6 sm:px-8 py-10 border-t border-[var(--border)] flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-[var(--muted)] gap-4"
+    >
+      <div>
+        1D1T · One day. One thing. · Take a day. Feel the love in everything.
       </div>
-    </div>
+      <div>macOS · SQLite · Local First · Zero Telemetry</div>
+    </footer>
 
-    <!-- 交互体验矩阵：ACTIVITY MATRIX (银盐质感 · 事实记录展台 · 无完成率与评分) -->
-    <section class="p-6 sm:p-8 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-xl space-y-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--border)]/60">
-        <div class="flex items-center gap-2.5 font-mono text-xs text-[var(--dim)]">
-          <span class="w-2.5 h-2.5 rounded-full bg-[var(--accent)] glow-cell-active inline-block"></span>
-          <span class="tracking-wider font-semibold uppercase">ACTIVITY MATRIX (最近 16 周交互体验预览)</span>
-        </div>
-        <div id="matrix-hover-tip" class="font-mono text-xs text-[var(--dim)] truncate min-h-[1.5em] flex items-center">
-          悬停在方格上查看当日记录
-        </div>
-      </div>
-
-      <!-- 16 周矩阵 (7 行 x 16 列 = 112 格) -->
-      <div class="overflow-x-auto py-2">
-        <div class="grid grid-flow-col grid-rows-7 gap-2 w-max" id="interactive-matrix">
-          <!-- 由 JS 渲染 -->
-        </div>
-      </div>
-
-      <!-- 底部图例与无完成率说明 -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between pt-3 border-t border-[var(--border)]/60 text-xs font-mono text-[var(--muted)] gap-2">
-        <div class="flex items-center gap-2">
-          <span>未记录</span>
-          <span class="w-3.5 h-3.5 rounded-[2px] bg-[var(--border)]/40 border border-[var(--border)]"></span>
-          <span class="w-3.5 h-3.5 rounded-[2px] bg-[var(--accent)] glow-cell-active"></span>
-          <span class="text-[var(--dim)]">已点亮</span>
-        </div>
-        <div class="text-[var(--dim)]">
-          共计专注记录：<strong class="text-[var(--ink)] font-bold">48 天</strong> · 没有完成率与评分
-        </div>
-      </div>
-    </section>
-
-    <!-- 极简三步曲 -->
-    <section class="pt-8 border-t border-[var(--border)]">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-        <div class="space-y-3">
-          <div class="font-mono text-xs text-[var(--accent)] font-semibold">01 / CHOOSE</div>
-          <h3 class="font-serif text-lg font-semibold text-[var(--ink)]">选定今日重点</h3>
-          <p class="font-serif text-sm text-[var(--dim)] leading-relaxed">
-            一天只有一个重点。想清楚今天最重要的事，输入命令，而后放下手机开始。
-          </p>
-          <code class="block font-mono text-xs text-[var(--muted)] pt-2">1d1t add "写完那篇文章"</code>
-        </div>
-
-        <div class="space-y-3">
-          <div class="font-mono text-xs text-[var(--accent)] font-semibold">02 / RECORD</div>
-          <h3 class="font-serif text-lg font-semibold text-[var(--ink)]">留下一句记录</h3>
-          <p class="font-serif text-sm text-[var(--dim)] leading-relaxed">
-            完成时，为今天留一句话。尚未完成的事可以明天主动沿用，不带自责。
-          </p>
-          <code class="block font-mono text-xs text-[var(--muted)] pt-2">1d1t done "把想法写下来了"</code>
-        </div>
-
-        <div class="space-y-3">
-          <div class="font-mono text-xs text-[var(--accent)] font-semibold">03 / REFLECT</div>
-          <h3 class="font-serif text-lg font-semibold text-[var(--ink)]">看见那些日子</h3>
-          <p class="font-serif text-sm text-[var(--dim)] leading-relaxed">
-            用贡献日历回看走过的轨迹。一天一格，没有完成率，也没有给生活打分。
-          </p>
-          <code class="block font-mono text-xs text-[var(--muted)] pt-2">1d1t calendar</code>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- 艺术画册页脚 -->
-  <footer class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-10 border-t border-[var(--border)] flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-[var(--muted)] gap-4">
-    <div>1D1T · One day. One thing. · Take a day. Feel the love in everything.</div>
-    <div>macOS · SQLite · Local First · Zero Telemetry</div>
-  </footer>
-
-  <!-- 页面交互脚本 -->
-  <script>
-    function copyCommand(text, btn) {
-      navigator.clipboard.writeText(text).then(() => {
-        const old = btn.innerHTML;
-        btn.innerHTML = 'copied!';
-        setTimeout(() => { btn.innerHTML = old; }, 1800);
-      });
-    }
-
-    // 动态交互日历生成器（银盐质感 · 专注于事实记录 · 无完成率与评分）
-    function renderActivityMatrix() {
-      const container = document.getElementById('interactive-matrix');
-      const hoverTip = document.getElementById('matrix-hover-tip');
-      if (!container) return;
-      container.innerHTML = '';
-
-      const sampleNotes = [
-        '把想法写下来了',
-        '整理书架，读完了第三章',
-        '完成 SQLite 本地持久化与迁移',
-        '重写模块接口，消除深层冗余',
-        '给阳台的花浇水，在河边散步一小时',
-        '解决 macOS 路径兼容问题',
-        '在安静里写完新版使用文档',
-        '早睡，关掉屏幕听雨声',
-        '重构终端欢迎界面的字符排版',
-        '写完那篇拖延了一周的文章',
-        '归档历史旧代码，放下焦虑',
-        '修好 Homebrew tap 自动打包脚本'
-      ];
-
-      // 16 列 x 7 行 = 112 格。正好点亮 48 天（与底部“共计专注记录：48 天”呼应）
-      // 没有任何完成率、连胜、打分，纯粹记录当天留心并完成的一件事
-      const baseDate = new Date(2026, 8, 23); // 2026-09-23
-      const totalCells = 16 * 7;
-      const litIndices = new Set([
-        1, 2, 4, 7, 8, 10, 13, 15, 16, 19, 21, 22, 25, 27, 28, 30,
-        34, 35, 38, 41, 42, 44, 47, 49, 50, 52, 55, 57, 58, 62, 63, 65,
-        68, 70, 71, 74, 76, 78, 81, 83, 85, 88, 90, 92, 95, 97, 99, 103
-      ]);
-
-      let noteIdx = 0;
-      for (let c = 0; c < 16; c++) {
-        for (let r = 0; r < 7; r++) {
-          const index = c * 7 + r;
-          const isDone = litIndices.has(index);
-          const cell = document.createElement('div');
-
-          // 计算对应日期（最右下角对应最新 2026-09-23）
-          const daysAgo = totalCells - 1 - index;
-          const cellDate = new Date(baseDate.getTime() - daysAgo * 86400000);
-          const y = cellDate.getFullYear();
-          const m = String(cellDate.getMonth() + 1).padStart(2, '0');
-          const d = String(cellDate.getDate()).padStart(2, '0');
-          const dayStr = `${y}-${m}-${d}`;
-
-          const desc = isDone ? sampleNotes[(noteIdx++) % sampleNotes.length] : '';
-
-          cell.className = `w-3.5 h-3.5 rounded-[2px] transition-all duration-150 cursor-pointer ${
-            isDone
-              ? 'bg-[var(--accent)] glow-cell-active hover:scale-125'
-              : 'bg-[var(--border)]/40 border border-[var(--border)] hover:border-[var(--dim)]'
-          }`;
-
-          cell.setAttribute('data-date', dayStr);
-          if (isDone) cell.setAttribute('data-desc', desc);
-
-          cell.onmouseenter = () => {
-            if (hoverTip) {
-              if (isDone) {
-                hoverTip.innerHTML = `<span class="text-[var(--accent)] font-bold">${dayStr}</span>: <span class="text-[var(--ink)] font-normal">${desc}</span>`;
-              } else {
-                hoverTip.innerHTML = `<span class="text-[var(--muted)]">${dayStr}</span>: <span class="text-[var(--muted)] italic">今日未记录重点</span>`;
-              }
-            }
-          };
-
-          container.appendChild(cell);
-        }
+    <!-- 页面交互脚本 -->
+    <script>
+      function copyCommand(text, btn) {
+        navigator.clipboard.writeText(text).then(() => {
+          const old = btn.innerHTML;
+          btn.innerHTML = "copied!";
+          setTimeout(() => {
+            btn.innerHTML = old;
+          }, 1800);
+        });
       }
 
-      container.onmouseleave = () => {
-        if (hoverTip) {
-          hoverTip.innerHTML = '<span class="text-[var(--dim)]">悬停在方格上查看当日记录</span>';
-        }
-      };
-    }
+      // 仅演示日历的视觉和交互；日期与默认的最近 12 周范围跟随本地时间。
+      function renderActivityMatrix() {
+        const container = document.getElementById("interactive-matrix");
+        const hoverTip = document.getElementById("matrix-hover-tip");
+        const monthsContainer = document.getElementById("matrix-months");
+        if (!container) return;
+        container.innerHTML = "";
+        if (monthsContainer) monthsContainer.innerHTML = "";
 
-    document.addEventListener('DOMContentLoaded', () => {
-      renderActivityMatrix();
-    });
-  </script>
-</body>
+        const sampleNotes = [
+          "把想法写下来了",
+          "整理书架，读完了第三章",
+          "完成 SQLite 本地持久化与迁移",
+          "重写模块接口，消除深层冗余",
+          "给阳台的花浇水，在河边散步一小时",
+          "解决 macOS 路径兼容问题",
+          "在安静里写完新版使用文档",
+          "早睡，关掉屏幕听雨声",
+          "重构终端欢迎界面的字符排版",
+          "写完那篇拖延了一周的文章",
+          "归档历史旧代码，放下焦虑",
+          "修好 Homebrew tap 自动打包脚本",
+        ];
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const dayOfWeek = (today.getDay() + 6) % 7; // Monday is 0
+        const startMonday = new Date(today);
+        startMonday.setDate(today.getDate() - dayOfWeek - 11 * 7);
+
+        const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+        // 1. 生成上方月份行
+        if (monthsContainer) {
+          let lastMonth = null;
+          for (let c = 0; c < 12; c++) {
+            const colDate = new Date(startMonday);
+            colDate.setDate(startMonday.getDate() + c * 7);
+            const monthNum = String(colDate.getMonth() + 1).padStart(2, "0");
+            const monthEl = document.createElement("div");
+            monthEl.className = "w-3.5 text-center";
+            if (monthNum !== lastMonth) {
+              monthEl.textContent = monthNum;
+              lastMonth = monthNum;
+            } else {
+              monthEl.textContent = "";
+            }
+            monthsContainer.appendChild(monthEl);
+          }
+        }
+
+        // 示例数据只点亮过去的日子，不代表访客的实际记录。
+        const litIndices = new Set([
+          1, 2, 4, 7, 8, 10, 13, 15, 16, 19, 21, 22, 25, 27, 28, 30, 34, 35, 38,
+          41, 42, 44, 47, 49, 50, 52, 55, 57, 58, 62, 63, 65, 68, 70, 71, 74,
+          76, 78, 81, 83,
+        ]);
+
+        let noteIdx = 0;
+        let recordedCount = 0;
+        for (let c = 0; c < 12; c++) {
+          for (let r = 0; r < 7; r++) {
+            const index = c * 7 + r;
+            const cellDate = new Date(startMonday);
+            cellDate.setDate(startMonday.getDate() + c * 7 + r);
+
+            const y = cellDate.getFullYear();
+            const m = String(cellDate.getMonth() + 1).padStart(2, "0");
+            const d = String(cellDate.getDate()).padStart(2, "0");
+            const dayStr = `${y}-${m}-${d}`;
+            const weekdayName = weekdays[r];
+
+            const isFuture = cellDate > today;
+            const isToday = cellDate.toDateString() === today.toDateString();
+            const isDone = !isFuture && !isToday && litIndices.has(index);
+            if (isDone) recordedCount++;
+            const desc = isDone
+              ? sampleNotes[noteIdx++ % sampleNotes.length]
+              : "";
+
+            const cell = document.createElement("div");
+
+            if (isFuture) {
+              cell.className = "w-3.5 h-3.5 opacity-0 pointer-events-none";
+            } else if (isToday) {
+              cell.className =
+                "w-3.5 h-3.5 rounded-[2px] border-2 border-[var(--accent)] bg-transparent hover:scale-125 transition-all duration-150 cursor-pointer";
+            } else if (isDone) {
+              cell.className =
+                "w-3.5 h-3.5 rounded-[2px] bg-[var(--accent)] glow-cell-active hover:scale-125 transition-all duration-150 cursor-pointer";
+            } else {
+              cell.className =
+                "w-3.5 h-3.5 rounded-[2px] bg-[var(--border)]/40 border border-[var(--border)] hover:border-[var(--dim)] transition-all duration-150 cursor-pointer";
+            }
+
+            if (!isFuture) {
+              cell.setAttribute("data-date", dayStr);
+              if (isDone) cell.setAttribute("data-desc", desc);
+
+              cell.onmouseenter = () => {
+                if (hoverTip) {
+                  if (isToday) {
+                    hoverTip.innerHTML = `<span class="text-[var(--accent)] font-bold">${dayStr} [${weekdayName}]</span> <span class="px-1.5 py-0.5 rounded text-[10px] border border-[var(--accent)] text-[var(--accent)] font-semibold uppercase">今天</span> <span class="text-[var(--dim)]">今日待完成重点</span>`;
+                  } else if (isDone) {
+                    hoverTip.innerHTML = `<span class="text-[var(--accent)] font-bold">${dayStr} [${weekdayName}]</span> <span class="px-1.5 py-0.5 rounded text-[10px] bg-[var(--border)] text-[var(--ink)] font-semibold uppercase">已完成</span> <span class="text-[var(--ink)]">${desc}</span>`;
+                  } else {
+                    hoverTip.innerHTML = `<span class="text-[var(--muted)]">${dayStr} [${weekdayName}]</span> <span class="px-1.5 py-0.5 rounded text-[10px] bg-[var(--border)]/40 text-[var(--muted)]">无记录</span>`;
+                  }
+                }
+              };
+            }
+
+            container.appendChild(cell);
+          }
+        }
+        document.getElementById("matrix-recorded-count").textContent = recordedCount;
+
+        container.onmouseleave = () => {
+          if (hoverTip) {
+            hoverTip.innerHTML =
+              '<span class="text-[var(--dim)]">悬停在方格上查看当日记录</span>';
+          }
+        };
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        renderActivityMatrix();
+      });
+    </script>
+  </body>
 </html>

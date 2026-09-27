@@ -23,7 +23,7 @@ class Store:
             with self.write():
                 version = self.db.execute("PRAGMA user_version").fetchone()[0]
                 if version not in (0, 1):
-                    raise UserError("数据由更新版本创建，请升级 1d1t 后再打开。")
+                    raise UserError("Database was created by a newer version. Please upgrade 1d1t.")
                 self.db.execute("""
                     CREATE TABLE IF NOT EXISTS focus_days (
                         day TEXT PRIMARY KEY,
@@ -62,7 +62,7 @@ class Store:
     def add(self, day, title):
         with self.write():
             if self.get(day):
-                raise UserError("今天已有重点，请使用 1d1t edit 修改；完成后不能追加。")
+                raise UserError("A focus is already set for today. Use '1d1t edit' to modify it.")
             self.db.execute(
                 "INSERT INTO focus_days (day, title, created_at) VALUES (?, ?, ?)",
                 (day.isoformat(), title, timestamp()),
@@ -72,13 +72,13 @@ class Store:
     def require(self, day):
         row = self.get(day)
         if row is None:
-            raise UserError(f"{day.isoformat()} 还没有重点。请先用 1d1t add 设置今日重点。")
+            raise UserError(f"No focus set for {day.isoformat()}. Run '1d1t add' to set today's focus.")
         return row
 
     def edit(self, day, title):
         with self.write():
             if self.require(day)["done_at"]:
-                raise UserError("今日重点已完成；如需纠正，请先用 1d1t undo 撤销完成。")
+                raise UserError("Today's focus is already completed. Run '1d1t undo' first to reopen it.")
             self.db.execute(
                 "UPDATE focus_days SET title = ? WHERE day = ?", (title, day.isoformat())
             )
@@ -97,7 +97,7 @@ class Store:
     def undo(self, day):
         with self.write():
             if not self.require(day)["done_at"]:
-                raise UserError("今日重点尚未完成，无需撤销。")
+                raise UserError("Today's focus is not completed yet; nothing to undo.")
             self.db.execute(
                 "UPDATE focus_days SET done_at = NULL, note = NULL WHERE day = ?",
                 (day.isoformat(),),
@@ -108,10 +108,10 @@ class Store:
         yesterday = day - timedelta(days=1)
         with self.write():
             if self.get(day):
-                raise UserError("今天已有重点，不能沿用覆盖；请使用 1d1t edit 修改。")
+                raise UserError("Today already has a focus; cannot carry over. Use '1d1t edit' to modify.")
             previous = self.get(yesterday)
             if previous is None or previous["done_at"]:
-                raise UserError("昨天没有未完成的重点可以沿用。")
+                raise UserError("Yesterday has no pending focus to carry over.")
             self.db.execute(
                 "INSERT INTO focus_days (day, title, created_at, source_day) VALUES (?, ?, ?, ?)",
                 (day.isoformat(), previous["title"], timestamp(), yesterday.isoformat()),
