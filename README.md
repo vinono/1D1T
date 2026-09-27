@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="assets/1d1t-icon.png" alt="1D1T：终端提示符与点亮的方格" width="112">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/1d1t-mark-dark.svg">
+    <img src="assets/1d1t-mark-light.svg" alt="1D1T：终端提示符与点亮的方格" width="112">
+  </picture>
 </p>
 
 <h1 align="center">1D1T</h1>

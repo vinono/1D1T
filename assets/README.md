@@ -7,6 +7,8 @@
 当前欢迎界面图为 [`terminal-welcome.png`](terminal-welcome.png)，用于 README 与落地页。
 重新生成步骤见 [terminal-welcome.md](terminal-welcome.md)。
 
+README 顶部使用透明底的 `1d1t-mark-light.svg` / `1d1t-mark-dark.svg`，随 GitHub 明暗主题切换；方形 PNG 保留给站点图标。
+
 ## 图标
 
 `1d1t-icon.png`：方形 PNG 图标，使用与终端 Welcome 相同的实心方格字形；
